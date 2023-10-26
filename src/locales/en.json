@@ -1,0 +1,8 @@
+{
+  "appNamespace": {
+    "appName": "Chatty"
+  },
+  "messagesNamespace": {
+    "languageError": "Language not changed, please try again later!"
+  }
+}
