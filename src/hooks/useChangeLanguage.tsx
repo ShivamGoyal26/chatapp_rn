@@ -5,11 +5,14 @@ import {useTranslation} from 'react-i18next';
 import {Keys} from '../constants';
 import {useAsyncStorage} from '../hooks';
 
-const useChangeLanguage = (language: string) => {
+const useChangeLanguage = () => {
   const {t, i18n} = useTranslation();
-  const {setValue} = useAsyncStorage(Keys.LOCALE_PERSISTENCE_KEY, 'default');
+  const {setValue} = useAsyncStorage(
+    Keys.LOCALE_PERSISTENCE_LANG_KEY,
+    'default',
+  );
 
-  const changeLanguage = async () => {
+  const changeLanguage = async (language: string) => {
     try {
       await i18n.changeLanguage(language); // Wait for the language change to complete
       setValue(language);

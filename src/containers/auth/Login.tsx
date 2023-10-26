@@ -10,6 +10,7 @@ import {Colors} from '../../theme/types';
 import {getScreenHeight} from '../../utils/commonServices';
 import {AppDispatch, RootState} from '../../redux/store';
 import {getUserDataThunk} from '../../redux/auth';
+import useChangeLanguage from '../../hooks/useChangeLanguage';
 
 const Login = () => {
   const theme = useTheme();
@@ -26,15 +27,12 @@ const Login = () => {
       StatusBar.setBarStyle('dark-content');
     }
     getUserData();
+    console.log('Runing');
   }, [colors?.background]);
 
   const getUserData = async () => {
-    try {
-      const val = await dispatch(getUserDataThunk('demo!gm'));
-      console.log(val, userData);
-    } catch (error) {
-      console.log('Rjkd', error);
-    }
+    const val = await dispatch(getUserDataThunk('demo!gm'));
+    // console.log(val, userData);
   };
 
   return (
