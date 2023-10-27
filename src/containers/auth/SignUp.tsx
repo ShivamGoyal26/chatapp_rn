@@ -5,7 +5,6 @@ import {
   StatusBar,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
@@ -21,17 +20,16 @@ import {emailRegex} from '../../utils/regex';
 import {ColorTheme, Theme} from '../../theme';
 import {getUserDataThunk} from '../../redux/auth';
 import {LoginInputData} from '../../types/auth';
-import {navigate} from '../../utils/routerServices';
-import {Images, Routes} from '../../constants';
+import {Images} from '../../constants';
 import {
   Box,
   CustomButton,
   CustomHeader,
   CustomTextInput,
-  Text,
 } from '../../components';
+import {goBack} from '../../utils/routerServices';
 
-const Login = () => {
+const SignUp = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
@@ -66,7 +64,11 @@ const Login = () => {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <CustomHeader title={t('appNamespace.login')} />
+      <CustomHeader
+        leftAction={goBack}
+        leftIcon={Images.back}
+        title={t('appNamespace.signUp')}
+      />
 
       <KeyboardAwareScrollView
         bounces={false}
@@ -107,7 +109,7 @@ const Login = () => {
             />
           </Box>
 
-          <Box marginBottom="m">
+          <Box marginBottom="l">
             <Controller
               name="password"
               control={control}
@@ -141,17 +143,9 @@ const Login = () => {
             />
           </Box>
 
-          <TouchableOpacity
-            style={styles.account}
-            onPress={() => navigate(Routes.SIGNUP, {})}>
-            <Text marginVertical="l" variant="subtitle">
-              {t('appNamespace.noAccount')}
-            </Text>
-          </TouchableOpacity>
-
           <CustomButton
             action={handleSubmit(onLoginPress)}
-            title={t('appNamespace.getIn')}
+            title={t('appNamespace.create')}
           />
         </Box>
       </KeyboardAwareScrollView>
@@ -169,10 +163,7 @@ const createStyles = (theme: ColorTheme) => {
       color: theme.mainBackground,
       fontSize: getScreenHeight(2),
     },
-    account: {
-      alignSelf: 'center',
-    },
   });
 };
 
-export default Login;
+export default SignUp;

@@ -1,10 +1,14 @@
 {
   "appNamespace": {
     "login": "let's login!",
+    "signUp": "let's create account!",
     "email": "email",
     "password": "password",
     "emailTitle": "please enter email",
-    "passwordTitle": "please enter password"
+    "passwordTitle": "please enter password",
+    "noAccount": "don't have account? register here",
+    "create": "create",
+    "getIn": "get in"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {loginData} from '../../types/auth';
+import {LoginInputData} from '../../types/auth';
 
 // Files
 
@@ -20,7 +20,7 @@ const authSlice = createSlice({
 
 export const getUserDataThunk = createAsyncThunk(
   'auth/getUserDataThunk',
-  async (data: loginData, {dispatch}) => {
+  async (data: LoginInputData, {dispatch}) => {
     dispatch(setUserData(data));
     return await new Promise(resolve => {
       setTimeout(() => {

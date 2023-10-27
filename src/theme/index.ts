@@ -41,6 +41,12 @@ export const theme = createTheme({
       color: 'borderColor',
       fontFamily: Fonts.regular,
     },
+    subtitle: {
+      fontSize: 12,
+      lineHeight: 24,
+      color: 'mainForeground',
+      fontFamily: Fonts.regular,
+    },
     title: {
       fontSize: 15,
       lineHeight: 24,
@@ -48,7 +54,7 @@ export const theme = createTheme({
       fontFamily: Fonts.medium,
     },
     heading: {
-      fontSize: 22,
+      fontSize: 20,
       lineHeight: 24,
       color: 'primaryCardBackground',
       fontFamily: Fonts.semibold,
