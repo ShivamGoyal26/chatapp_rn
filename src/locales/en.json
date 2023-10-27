@@ -1,8 +1,16 @@
 {
   "appNamespace": {
-    "appName": "Chatty"
+    "login": "let's login!",
+    "email": "email",
+    "password": "password",
+    "emailTitle": "please enter email",
+    "passwordTitle": "please enter password"
   },
   "messagesNamespace": {
-    "languageError": "Language not changed, please try again later!"
+    "languageError": "language not changed, please try again later!",
+    "emailRequired": "email is required",
+    "passwordRequired": "password is required",
+    "validEmail": "please enter a valid email",
+    "validPassword": "password must be at least 6 characters"
   }
 }

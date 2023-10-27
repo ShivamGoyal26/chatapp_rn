@@ -1,43 +1,91 @@
-import {DefaultTheme, ExtendedTheme} from '@react-navigation/native';
+import {createTheme} from '@shopify/restyle';
+import {Fonts} from '../constants';
 
-export const platte = {
-  white: '#ffffff',
-  lightRose: '#f1807e',
-  lightGrey: '#808080',
+const palette = {
+  purple: '#5A31F4',
+  white: '#FFFFFF',
   black: '#000000',
-  lightBlue: '#ADD8E6',
+  darkGray: '#A9A9A9',
+  lightGray: '#EEE',
+  lightRose: '#f1807e',
 };
 
-export const DarkTheme: ExtendedTheme = {
-  dark: true,
-  colors: {
-    ...DefaultTheme.colors,
-    backgroundColor: platte.black,
-    textColor: platte.white,
-    primary: platte.lightGrey,
-    background: platte.white,
-    card: platte.black,
-    text: platte.black,
-    notification: platte.black,
-    border: platte.black,
-    grey: platte.lightGrey,
-    error: platte.lightRose,
+export const theme = createTheme({
+  spacing: {
+    s: 8,
+    m: 16,
+    l: 24,
   },
-};
-
-export const LightTheme: ExtendedTheme = {
-  dark: false,
   colors: {
-    ...DefaultTheme.colors,
-    backgroundColor: platte.white,
-    textColor: platte.black,
-    primary: platte.lightBlue,
-    background: platte.white,
-    card: platte.white,
-    text: platte.white,
-    notification: platte.white,
-    border: platte.white,
-    grey: platte.lightGrey,
-    error: platte.lightRose,
+    mainBackground: palette.lightGray,
+    mainForeground: palette.black,
+
+    primaryCardBackground: palette.purple,
+    secondaryCardBackground: palette.white,
+    primaryCardText: palette.white,
+    secondaryCardText: palette.black,
+    error: palette.lightRose,
+
+    borderColor: palette.darkGray,
+  },
+  textVariants: {
+    defaults: {
+      fontSize: 14,
+      lineHeight: 24,
+      color: 'mainForeground',
+      fontFamily: Fonts.regular,
+    },
+    body: {
+      fontSize: 14,
+      lineHeight: 24,
+      color: 'borderColor',
+      fontFamily: Fonts.regular,
+    },
+    title: {
+      fontSize: 15,
+      lineHeight: 24,
+      color: 'mainForeground',
+      fontFamily: Fonts.medium,
+    },
+    heading: {
+      fontSize: 22,
+      lineHeight: 24,
+      color: 'primaryCardBackground',
+      fontFamily: Fonts.semibold,
+    },
+    error: {
+      fontSize: 14,
+      lineHeight: 24,
+      color: 'error',
+      fontFamily: Fonts.regular,
+    },
+  },
+  cardVariants: {
+    defaults: {},
+    primary: {
+      backgroundColor: 'primaryCardBackground',
+      shadowOpacity: 0.3,
+    },
+    secondary: {
+      backgroundColor: 'secondaryCardBackground',
+      shadowOpacity: 0.1,
+    },
+  },
+});
+
+export type Theme = typeof theme;
+export type ColorTheme = typeof theme.colors;
+
+export const darkTheme: Theme = {
+  ...theme,
+  colors: {
+    ...theme.colors,
+    mainBackground: palette.black,
+    mainForeground: palette.white,
+
+    secondaryCardBackground: palette.darkGray,
+    secondaryCardText: palette.white,
+
+    borderColor: palette.lightGray,
   },
 };
