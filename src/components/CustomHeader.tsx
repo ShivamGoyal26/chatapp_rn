@@ -7,7 +7,6 @@ import {useTheme} from '@shopify/restyle';
 import {getScreenHeight} from '../utils/commonServices';
 import {ColorTheme, Theme} from '../theme';
 import Text from './Text';
-import Box from './Box';
 
 type CustomHeaderProps = {
   title?: string;
@@ -49,11 +48,15 @@ const CustomHeader = ({
       ) : (
         <View style={styles.iconContainer} />
       )}
-      <Box alignItems="center" flex={1}>
-        <Text variant="heading" numberOfLines={2}>
-          {title}
-        </Text>
-      </Box>
+
+      <Text
+        textAlign="center"
+        variant="heading"
+        style={styles.title}
+        numberOfLines={2}>
+        {title}
+      </Text>
+
       {rightIcon ? (
         <TouchableOpacity
           disabled={!rightAction}
@@ -92,6 +95,9 @@ const createStyles = (theme: ColorTheme) =>
     icon: {
       width: getScreenHeight(2.5),
       height: getScreenHeight(2.5),
+    },
+    title: {
+      flex: 1,
     },
   });
 

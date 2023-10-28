@@ -1,10 +1,11 @@
 import {createTheme} from '@shopify/restyle';
 import {Fonts} from '../constants';
+import {getScreenHeight} from '../utils/commonServices';
 
 const palette = {
   purple: '#5A31F4',
   white: '#FFFFFF',
-  black: '#000000',
+  black: '#222222',
   darkGray: '#A9A9A9',
   lightGray: '#EEE',
   lightRose: '#f1807e',
@@ -12,9 +13,10 @@ const palette = {
 
 export const theme = createTheme({
   spacing: {
-    s: 8,
-    m: 16,
-    l: 24,
+    xs: getScreenHeight(1),
+    s: getScreenHeight(1.2),
+    m: getScreenHeight(1.5),
+    l: getScreenHeight(2),
   },
   colors: {
     mainBackground: palette.lightGray,
@@ -30,37 +32,37 @@ export const theme = createTheme({
   },
   textVariants: {
     defaults: {
-      fontSize: 14,
+      fontSize: getScreenHeight(1.4),
       lineHeight: 24,
       color: 'mainForeground',
       fontFamily: Fonts.regular,
     },
     body: {
-      fontSize: 14,
+      fontSize: getScreenHeight(1.4),
       lineHeight: 24,
       color: 'borderColor',
       fontFamily: Fonts.regular,
     },
     subtitle: {
-      fontSize: 12,
+      fontSize: getScreenHeight(1.4),
       lineHeight: 24,
       color: 'mainForeground',
       fontFamily: Fonts.regular,
     },
     title: {
-      fontSize: 15,
+      fontSize: getScreenHeight(1.6),
       lineHeight: 24,
       color: 'mainForeground',
       fontFamily: Fonts.medium,
     },
     heading: {
-      fontSize: 20,
+      fontSize: getScreenHeight(2),
       lineHeight: 24,
       color: 'primaryCardBackground',
       fontFamily: Fonts.semibold,
     },
     error: {
-      fontSize: 14,
+      fontSize: getScreenHeight(1.3),
       lineHeight: 24,
       color: 'error',
       fontFamily: Fonts.regular,
@@ -91,6 +93,8 @@ export const darkTheme: Theme = {
 
     secondaryCardBackground: palette.darkGray,
     secondaryCardText: palette.white,
+
+    primaryCardBackground: palette.white,
 
     borderColor: palette.lightGray,
   },

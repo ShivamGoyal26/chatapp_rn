@@ -65,6 +65,7 @@ const SignUp = () => {
   return (
     <SafeAreaView style={styles.safe}>
       <CustomHeader
+        leftIconColor={colors.mainForeground}
         leftAction={goBack}
         leftIcon={Images.back}
         title={t('appNamespace.signUp')}
@@ -123,6 +124,7 @@ const SignUp = () => {
               defaultValue=""
               render={({field}) => (
                 <CustomTextInput
+                  rightTint={colors.mainForeground}
                   rightIcon={secure ? Images.show : Images.hide}
                   rightAction={() => setSecure(pre => !pre)}
                   secure={secure}

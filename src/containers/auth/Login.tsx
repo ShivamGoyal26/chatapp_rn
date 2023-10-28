@@ -90,6 +90,7 @@ const Login = () => {
               defaultValue=""
               render={({field}) => (
                 <CustomTextInput
+                  rightTint={colors.mainForeground}
                   autoCapitalize="none"
                   inputRef={emailRef}
                   label={t('appNamespace.emailTitle')}

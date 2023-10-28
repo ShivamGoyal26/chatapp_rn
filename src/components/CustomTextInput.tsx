@@ -147,7 +147,7 @@ const CustomTextInput = ({
         )}
       </View>
       {error ? (
-        <Text numberOfLines={1} mt="s" variant="error">
+        <Text numberOfLines={1} mt="xs" variant="error">
           {error}
         </Text>
       ) : null}
