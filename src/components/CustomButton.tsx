@@ -31,7 +31,6 @@ const CustomButton = ({
   const {colors} = theme;
   const styles = useMemo(() => createStyles(colors), [colors]);
   const loading = useSelector((state: RootState) => state.common.loading);
-  console.log(loading);
 
   return (
     <TouchableOpacity

@@ -13,6 +13,7 @@ import {useTranslation} from 'react-i18next';
 import {useForm, Controller, SubmitHandler} from 'react-hook-form';
 import {useTheme} from '@shopify/restyle';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
@@ -41,6 +42,7 @@ const Login = () => {
   const styles = useMemo(() => createStyles(colors), [colors]);
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
+  const cancelToken = useRef<any>();
 
   const [secure, setSecure] = useState(true);
 
@@ -49,6 +51,11 @@ const Login = () => {
       StatusBar.setBackgroundColor(colors.mainBackground);
       StatusBar.setBarStyle('dark-content');
     }
+    return () => {
+      if (cancelToken?.current) {
+        cancelToken.current('Cancelled');
+      }
+    };
   }, [colors?.mainBackground]);
 
   const {
@@ -59,9 +66,9 @@ const Login = () => {
   } = useForm<LoginInputData>();
 
   const onLoginPress: SubmitHandler<LoginInputData> = async data => {
-    const res = await dispatch(getUserDataThunk(data));
-    console.log(res);
-    console.log(userData);
+    const {cancel, token} = axios.CancelToken.source();
+    cancelToken.current = cancel;
+    dispatch(getUserDataThunk({data: data, cancelToken: token}));
   };
 
   return (
@@ -87,7 +94,7 @@ const Login = () => {
                   message: t('messagesNamespace.validEmail'),
                 },
               }}
-              defaultValue=""
+              defaultValue="shivam@shivam.com"
               render={({field}) => (
                 <CustomTextInput
                   rightTint={colors.mainForeground}
@@ -119,7 +126,7 @@ const Login = () => {
                   message: t('messagesNamespace.validPassword'),
                 },
               }}
-              defaultValue=""
+              defaultValue="123456"
               render={({field}) => (
                 <CustomTextInput
                   rightIcon={secure ? Images.show : Images.hide}

@@ -4,6 +4,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   loading: false,
+  isInternet: true,
 };
 
 const commonSlice = createSlice({
@@ -14,9 +15,12 @@ const commonSlice = createSlice({
     setLoading(state, action) {
       state.loading = action.payload;
     },
+    setIsInternet(state, action) {
+      state.isInternet = action.payload;
+    },
   },
 });
 
-export const {setLoading} = commonSlice.actions;
+export const {setLoading, setIsInternet} = commonSlice.actions;
 
 export default commonSlice.reducer;

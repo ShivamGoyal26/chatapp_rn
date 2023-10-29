@@ -59,7 +59,6 @@ const SignUp = () => {
   const onLoginPress: SubmitHandler<LoginInputData> = async data => {
     const res = await dispatch(getUserDataThunk(data));
     console.log(res);
-    console.log(userData);
   };
 
   return (

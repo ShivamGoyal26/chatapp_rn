@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {useColorScheme} from 'react-native';
+import {StyleSheet, useColorScheme} from 'react-native';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {ThemeProvider} from '@shopify/restyle';
@@ -11,6 +11,9 @@ import {NavigationRef} from './src/utils/routerServices';
 import {MainStack} from './src/routers';
 import {persistor, store} from './src/redux/store';
 import {darkTheme, theme} from './src/theme';
+import FlashMessage from 'react-native-flash-message';
+import {Fonts} from './src/constants';
+import {getScreenHeight} from './src/utils/commonServices';
 
 const App = () => {
   const colorScheme = useColorScheme();
@@ -20,9 +23,8 @@ const App = () => {
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <SafeAreaProvider>
-            <NavigationContainer
-              // theme={colorScheme === 'light' ? LightTheme : DarkTheme}
-              ref={NavigationRef}>
+            <NavigationContainer ref={NavigationRef}>
+              <FlashMessage titleStyle={styles.title} position="top" />
               <MainStack />
             </NavigationContainer>
           </SafeAreaProvider>
@@ -31,5 +33,12 @@ const App = () => {
     </ThemeProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    fontFamily: Fonts.medium,
+    fontSize: getScreenHeight(1.8),
+  },
+});
 
 export default App;

@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 
 // Files
 import {Keys} from '../constants';
-import {useAsyncStorage} from '../hooks';
+import {useAsyncStorage} from '.';
 
 const useChangeLanguage = () => {
   const {t, i18n} = useTranslation();

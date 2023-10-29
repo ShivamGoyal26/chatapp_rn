@@ -1,10 +1,14 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {LoginInputData} from '../../types/auth';
 
 // Files
+import {LoginInputData} from '../../types/auth';
+import api from '../../constants/api';
+import apiCall from '../../services/apiCall';
+import toast from '../../utils/toast';
 
 const initialState = {
   userData: null,
+  authToken: null,
 };
 
 const authSlice = createSlice({
@@ -15,21 +19,35 @@ const authSlice = createSlice({
     setUserData(state, action) {
       state.userData = action.payload;
     },
+    setAuthToken(state, action) {
+      state.authToken = action.payload;
+    },
   },
 });
 
 export const getUserDataThunk = createAsyncThunk(
   'auth/getUserDataThunk',
-  async (data: LoginInputData, {dispatch}) => {
-    dispatch(setUserData(data));
-    return await new Promise(resolve => {
-      setTimeout(() => {
-        resolve(data);
-      }, 2000);
+  async (data: {data: LoginInputData; cancelToken: any}, {dispatch}) => {
+    return new Promise(async (resolve, reject) => {
+      let res = await apiCall({
+        type: api.apiTypes.post,
+        url: api.endpoints.LOGIN_URL,
+        data: data.data,
+        cancelToken: data.cancelToken,
+      });
+      console.log(res);
+      if (res?.status) {
+        dispatch(setUserData(res.data));
+        dispatch(setAuthToken(res.data.token));
+        resolve(res);
+      } else {
+        toast.showErrorMessage(res?.message);
+        reject(res?.message);
+      }
     });
   },
 );
 
-export const {resetAuthSlice, setUserData} = authSlice.actions;
+export const {resetAuthSlice, setUserData, setAuthToken} = authSlice.actions;
 
 export default authSlice.reducer;
