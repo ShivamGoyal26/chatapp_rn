@@ -15,8 +15,6 @@ const getInstance = ({
   cancelToken,
 }: any) => {
   const authToken = store.getState().auth.authToken;
-
-  const isInternet = store.getState().common.isInternet;
   const instance = axios.create({
     baseURL: api.baseUrl.STAGING_URL,
   });
@@ -54,10 +52,6 @@ const getInstance = ({
       if (authToken) {
         request.headers['Authorization'] = 'Bearer ' + authToken;
       }
-
-      if (!isInternet) {
-        source.cancel('Cancelled');
-      }
       if (__DEV__) {
         console.log(request.url);
       } else {
@@ -72,10 +66,6 @@ const getInstance = ({
 
   instance.interceptors.response.use(
     function (response) {
-      if (response.data.responseCode === 222) {
-        // store.dispatch(signOutManager());
-        throw new Error(response.data.message);
-      }
       return response;
     },
     function (error) {
@@ -155,9 +145,10 @@ const apiCall = async ({
     }
   } catch (error: any) {
     console.log('Error in catch', error.message);
-    if (error.message !== 'Cancelled') {
-      toast.showErrorMessage(error?.message);
-    }
+    return {
+      status: false,
+      message: error?.message,
+    };
   } finally {
     store.dispatch(setLoading(false));
   }

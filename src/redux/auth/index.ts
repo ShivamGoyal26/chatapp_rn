@@ -35,13 +35,14 @@ export const getUserDataThunk = createAsyncThunk(
         data: data.data,
         cancelToken: data.cancelToken,
       });
-      console.log(res);
       if (res?.status) {
         dispatch(setUserData(res.data));
         dispatch(setAuthToken(res.data.token));
         resolve(res);
       } else {
-        toast.showErrorMessage(res?.message);
+        if (res?.message !== 'Cancelled') {
+          toast.showErrorMessage(res?.message);
+        }
         reject(res?.message);
       }
     });
