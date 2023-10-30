@@ -12,5 +12,6 @@ export default {
   endpoints: {
     LOGIN_URL: '/user/login',
     SIGNUP_URL: '/user/register',
+    UPLOAD_ASSET_URL: '/assets/put',
   },
 };

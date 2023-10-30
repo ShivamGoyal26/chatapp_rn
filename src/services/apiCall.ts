@@ -12,6 +12,7 @@ const getInstance = ({
   params,
   extraAdditionToHeader,
   cancelToken,
+  replaceHeaders,
 }: any) => {
   const authToken = store.getState().auth.authToken;
   const instance = axios.create({
@@ -40,13 +41,17 @@ const getInstance = ({
       if (cancelToken) {
         request.cancelToken = cancelToken;
       }
-      if (extraAdditionToHeader) {
-        request.headers = {...request.headers, ...extraAdditionToHeader};
-      }
-      if (hasImage !== 0) {
-        request.headers['Content-Type'] = 'multipart/form-data';
+      if (replaceHeaders) {
+        request.headers = {...request.headers, ...replaceHeaders};
       } else {
-        request.headers['Content-Type'] = 'application/json';
+        if (extraAdditionToHeader) {
+          request.headers = {...request.headers, ...extraAdditionToHeader};
+        }
+        if (hasImage !== 0) {
+          request.headers['Content-Type'] = 'multipart/form-data';
+        } else {
+          request.headers['Content-Type'] = 'application/json';
+        }
       }
       if (authToken) {
         request.headers['Authorization'] = 'Bearer ' + authToken;
@@ -68,6 +73,7 @@ const getInstance = ({
       return response;
     },
     function (error) {
+      console.log('ERROR');
       if (error?.response?.status === 401 && isTokenExpired()) {
         // store.dispatch(signOutManager());
         // throw new Error(localization.sessionExpired);
@@ -106,6 +112,7 @@ const apiCall = async ({
   params = {},
   enableLoader = true,
   extraAdditionToHeader = null,
+  replaceHeaders = null,
   source,
   cancelToken,
 }: any) => {
@@ -119,30 +126,31 @@ const apiCall = async ({
     extraAdditionToHeader,
     source,
     cancelToken,
+    replaceHeaders,
   });
   try {
     switch (type) {
       case api.apiTypes.post: {
         let response = await instance.post(url);
-        return response?.data;
+        return response?.data ? response.data : response;
       }
       case api.apiTypes.patch: {
         let response = await instance.patch(url);
-        return response?.data;
+        return response?.data ? response.data : response;
       }
       case api.apiTypes.put: {
         let response = await instance.put(url);
-        return response?.data;
+        return response?.data ? response.data : response;
       }
 
       case api.apiTypes.delete: {
         let response = await instance.delete(url);
-        return response?.data;
+        return response?.data ? response.data : response;
       }
 
       case api.apiTypes.get: {
         let response = await instance.get(url);
-        return response?.data;
+        return response?.data ? response.data : response;
       }
 
       default: {

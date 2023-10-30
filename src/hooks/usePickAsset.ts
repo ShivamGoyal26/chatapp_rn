@@ -18,6 +18,7 @@ const usePickAsset = () => {
         if (res) {
           const options: any = {
             title: t('appNamespace.selectImage'),
+            // includeBase64: true,
             storageOptions: {
               skipBackup: true,
               path: 'images',
@@ -70,6 +71,7 @@ const usePickAsset = () => {
         if (res) {
           const options: any = {
             title: t('appNamespace.selectImage'),
+            // includeBase64: true,
             storageOptions: {
               skipBackup: true,
               path: 'images',

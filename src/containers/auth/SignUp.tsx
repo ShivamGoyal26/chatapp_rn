@@ -7,7 +7,7 @@ import {
   TextInput,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {useForm, Controller, SubmitHandler} from 'react-hook-form';
 import {useTheme} from '@shopify/restyle';
@@ -15,7 +15,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
-import {AppDispatch, RootState} from '../../redux/store';
+import {AppDispatch} from '../../redux/store';
 import {emailRegex} from '../../utils/regex';
 import {ColorTheme, Theme} from '../../theme';
 import {SignUpInputData} from '../../types/auth';
@@ -30,15 +30,12 @@ import {
 import {goBack} from '../../utils/routerServices';
 import {registerThunk} from '../../redux/auth';
 import axios from 'axios';
-import {useAssetAccess} from '../../hooks';
-import usePickAsset from '../../hooks/usePickAsset';
 import {PickImageType} from '../../types/common';
 
 const SignUp = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
-  const userData = useSelector((state: RootState) => state.auth.userData);
   const dispatch: AppDispatch = useDispatch();
 
   const styles = useMemo(() => createStyles(colors), [colors]);
@@ -75,6 +72,14 @@ const SignUp = () => {
   } = useForm<SignUpInputData>();
 
   const onSignUpPress: SubmitHandler<SignUpInputData> = async data => {
+    // let uploadAssetProps: UploadAssets = {
+    //   filename: `${image?.fileName}`,
+    //   contentType: image?.type,
+    //   imageData: image,
+    // };
+
+    // dispatch(uploadAssetsThunk(uploadAssetProps));
+
     const {cancel, token} = axios.CancelToken.source();
     cancelToken.current = cancel;
     dispatch(registerThunk({data, cancelToken: token}));
