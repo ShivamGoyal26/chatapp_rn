@@ -3,18 +3,36 @@
     "login": "let's login!",
     "signUp": "let's create account!",
     "email": "email",
+    "name": "name",
+    "nameTitle": "please enter the name",
     "password": "password",
     "emailTitle": "please enter email",
     "passwordTitle": "please enter password",
     "noAccount": "don't have account? register here",
     "create": "create",
-    "getIn": "get in"
+    "getIn": "get in",
+    "cameraPermissionDenied": "Camera Permission Denied",
+    "galleryPermissionDenied": "Gallery Permission Denied",
+    "pleaseProvideAccess": "please provide access",
+    "cancel": "cancel",
+    "openSettings": "open settings",
+    "selectImage": "select image",
+    "maxSize": "max size upto 15MB",
+    "camera": "camera",
+    "gallery": "gallery",
+    "selectChoice": "please select choice",
+    "galleryOrCamera": "gallery or camera"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",
+    "nameRequired": "name is required",
+    "validName": "please enter a valid name",
     "emailRequired": "email is required",
     "passwordRequired": "password is required",
     "validEmail": "please enter a valid email",
-    "validPassword": "password must be at least 6 characters"
+    "validPassword": "password must be at least 6 characters",
+    "selectValidImage": "please select a valid image",
+    "cameraNotAvailable": "camera not available on this device",
+    "corruptedImage": "image is corrupted, please pick other"
   }
 }

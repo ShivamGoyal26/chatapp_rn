@@ -18,16 +18,21 @@ import {getScreenHeight} from '../../utils/commonServices';
 import {AppDispatch, RootState} from '../../redux/store';
 import {emailRegex} from '../../utils/regex';
 import {ColorTheme, Theme} from '../../theme';
-import {getUserDataThunk} from '../../redux/auth';
-import {LoginInputData} from '../../types/auth';
+import {SignUpInputData} from '../../types/auth';
 import {Images} from '../../constants';
 import {
   Box,
   CustomButton,
   CustomHeader,
+  CustomImage,
   CustomTextInput,
 } from '../../components';
 import {goBack} from '../../utils/routerServices';
+import {registerThunk} from '../../redux/auth';
+import axios from 'axios';
+import {useAssetAccess} from '../../hooks';
+import usePickAsset from '../../hooks/usePickAsset';
+import {PickImageType} from '../../types/common';
 
 const SignUp = () => {
   const theme = useTheme<Theme>();
@@ -37,28 +42,42 @@ const SignUp = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const nameRef = useRef<TextInput>(null);
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
+  const cancelToken = useRef<any>();
 
   const [secure, setSecure] = useState(true);
+  const [image, setImage] = useState<PickImageType | null>(null);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
       StatusBar.setBackgroundColor(colors.mainBackground);
       StatusBar.setBarStyle('dark-content');
     }
+
+    return () => {
+      if (cancelToken?.current) {
+        cancelToken?.current('Cancelled');
+      }
+    };
   }, [colors?.mainBackground]);
+
+  const pickImage = (imageData: PickImageType) => {
+    setImage(imageData);
+  };
 
   const {
     control,
     handleSubmit,
     formState: {errors},
     trigger,
-  } = useForm<LoginInputData>();
+  } = useForm<SignUpInputData>();
 
-  const onLoginPress: SubmitHandler<LoginInputData> = async data => {
-    const res = await dispatch(getUserDataThunk(data));
-    console.log(res);
+  const onSignUpPress: SubmitHandler<SignUpInputData> = async data => {
+    const {cancel, token} = axios.CancelToken.source();
+    cancelToken.current = cancel;
+    dispatch(registerThunk({data, cancelToken: token}));
   };
 
   return (
@@ -78,6 +97,36 @@ const SignUp = () => {
         enableAutomaticScroll={Platform.OS === 'ios'}
         contentContainerStyle={{flexGrow: 1}}>
         <Box margin="s" flex={1} backgroundColor="mainBackground">
+          <Box mb="l" alignSelf="center">
+            <CustomImage uri={image?.uri} action={pickImage} />
+          </Box>
+
+          <Box marginBottom="m">
+            <Controller
+              name="name"
+              control={control}
+              rules={{
+                required: t('messagesNamespace.nameRequired'),
+              }}
+              defaultValue="shivam"
+              render={({field}) => (
+                <CustomTextInput
+                  inputRef={nameRef}
+                  label={t('appNamespace.nameTitle')}
+                  onChangeText={field.onChange}
+                  value={field.value}
+                  placeholder={t('appNamespace.name')}
+                  onBlur={() => trigger('name')}
+                  error={errors.name?.message}
+                  type="next"
+                  onSubmit={() => {
+                    emailRef.current?.focus();
+                  }}
+                />
+              )}
+            />
+          </Box>
+
           <Box marginBottom="m">
             <Controller
               name="email"
@@ -89,9 +138,10 @@ const SignUp = () => {
                   message: t('messagesNamespace.validEmail'),
                 },
               }}
-              defaultValue=""
+              defaultValue="shivam@shivam.com"
               render={({field}) => (
                 <CustomTextInput
+                  keyboardType="email-address"
                   autoCapitalize="none"
                   inputRef={emailRef}
                   label={t('appNamespace.emailTitle')}
@@ -120,7 +170,7 @@ const SignUp = () => {
                   message: t('messagesNamespace.validPassword'),
                 },
               }}
-              defaultValue=""
+              defaultValue="123456"
               render={({field}) => (
                 <CustomTextInput
                   rightTint={colors.mainForeground}
@@ -137,7 +187,7 @@ const SignUp = () => {
                   type="next"
                   onSubmit={() => {
                     Keyboard.dismiss();
-                    handleSubmit(onLoginPress);
+                    handleSubmit(onSignUpPress);
                   }}
                 />
               )}
@@ -145,7 +195,7 @@ const SignUp = () => {
           </Box>
 
           <CustomButton
-            action={handleSubmit(onLoginPress)}
+            action={handleSubmit(onSignUpPress)}
             title={t('appNamespace.create')}
           />
         </Box>

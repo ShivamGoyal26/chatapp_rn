@@ -35,6 +35,7 @@ type CustomTextInputProps = {
   error?: string;
   textAreaInput?: boolean;
   onBlur?: () => void;
+  keyboardType?: string;
   autoCapitalize?: TextInputProps['autoCapitalize'];
 };
 
@@ -59,6 +60,7 @@ const CustomTextInput = ({
   textAreaInput,
   onBlur,
   autoCapitalize,
+  keyboardType,
   ...props
 }: CustomTextInputProps) => {
   const theme = useTheme<Theme>();
@@ -105,6 +107,7 @@ const CustomTextInput = ({
           <TextInput
             autoCapitalize={autoCapitalize}
             {...props}
+            keyboardType={keyboardType}
             onBlur={onBlur}
             autoCorrect={true}
             editable={editable}

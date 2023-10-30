@@ -20,7 +20,7 @@ import {getScreenHeight} from '../../utils/commonServices';
 import {AppDispatch, RootState} from '../../redux/store';
 import {emailRegex} from '../../utils/regex';
 import {ColorTheme, Theme} from '../../theme';
-import {getUserDataThunk} from '../../redux/auth';
+import {loginThunk} from '../../redux/auth';
 import {LoginInputData} from '../../types/auth';
 import {navigate} from '../../utils/routerServices';
 import {Images, Routes} from '../../constants';
@@ -68,7 +68,7 @@ const Login = () => {
   const onLoginPress: SubmitHandler<LoginInputData> = async data => {
     const {cancel, token} = axios.CancelToken.source();
     cancelToken.current = cancel;
-    dispatch(getUserDataThunk({data: data, cancelToken: token}));
+    dispatch(loginThunk({data: data, cancelToken: token}));
   };
 
   return (

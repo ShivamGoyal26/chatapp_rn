@@ -2,10 +2,9 @@ import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 
 // Files
+import {setLoading} from '../redux/common';
 import {store} from '../redux/store';
 import api from '../constants/api';
-import {setLoading} from '../redux/common';
-import toast from '../utils/toast';
 
 const getInstance = ({
   hasImage,
@@ -83,7 +82,15 @@ const getInstance = ({
         //   return axiosInstance(originalRequest);
         // });
       } else {
-        throw new Error(error.message);
+        if (error?.response?.status) {
+          throw new Error(
+            error?.response?.data?.message
+              ? error?.response?.data?.message
+              : 'Something went wrong!',
+          );
+        } else {
+          throw new Error(error.message);
+        }
       }
     },
   );
