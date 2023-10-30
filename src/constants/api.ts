@@ -13,5 +13,6 @@ export default {
     LOGIN_URL: '/user/login',
     SIGNUP_URL: '/user/register',
     UPLOAD_ASSET_URL: '/assets/put',
+    GET_ASSET_URL: '/assets/get',
   },
 };

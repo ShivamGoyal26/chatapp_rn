@@ -18,7 +18,7 @@ import {usePickAsset} from '../../hooks';
 
 type CustomImageProps = {
   disabled?: boolean;
-  uri?: string;
+  uri?: string | undefined | null;
   action?: any;
 };
 

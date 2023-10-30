@@ -31,6 +31,8 @@ import {goBack} from '../../utils/routerServices';
 import {registerThunk} from '../../redux/auth';
 import axios from 'axios';
 import {PickImageType} from '../../types/common';
+import {uploadAssetsThunk} from '../../redux/assets';
+import {UploadAssets} from '../../types/assets';
 
 const SignUp = () => {
   const theme = useTheme<Theme>();
@@ -72,17 +74,19 @@ const SignUp = () => {
   } = useForm<SignUpInputData>();
 
   const onSignUpPress: SubmitHandler<SignUpInputData> = async data => {
-    // let uploadAssetProps: UploadAssets = {
-    //   filename: `${image?.fileName}`,
-    //   contentType: image?.type,
-    //   imageData: image,
-    // };
-
-    // dispatch(uploadAssetsThunk(uploadAssetProps));
-
     const {cancel, token} = axios.CancelToken.source();
     cancelToken.current = cancel;
-    dispatch(registerThunk({data, cancelToken: token}));
+    if (image) {
+      let uploadAssetProps: UploadAssets = {
+        filename: `${image?.fileName}`,
+        contentType: image?.type,
+        imageData: image,
+        ...data,
+        cancelToken: token,
+      };
+      return dispatch(uploadAssetsThunk(uploadAssetProps));
+    }
+    dispatch(registerThunk({...data, cancelToken: token}));
   };
 
   return (

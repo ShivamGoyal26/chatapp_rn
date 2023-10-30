@@ -7,6 +7,8 @@ export type SignUpInputData = {
   name: string;
   email: string;
   password: string;
+  cancelToken: any;
+  key?: string;
 };
 
 export type UserData = {

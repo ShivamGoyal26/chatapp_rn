@@ -70,12 +70,20 @@ export const loginThunk = createAsyncThunk(
 
 export const registerThunk = createAsyncThunk(
   'auth/registerThunk',
-  async (data: {data: SignUpInputData; cancelToken: any}, {dispatch}) => {
+  async (data: SignUpInputData, {dispatch}) => {
     return new Promise(async (resolve, reject) => {
+      let registerData: any = {
+        email: data.email,
+        password: data.password,
+        name: data.name,
+      };
+      if (data.key) {
+        registerData['pic'] = data.key;
+      }
       let res = await apiCall({
         type: api.apiTypes.post,
         url: api.endpoints.SIGNUP_URL,
-        data: data.data,
+        data: registerData,
         cancelToken: data.cancelToken,
       });
       if (res?.status) {

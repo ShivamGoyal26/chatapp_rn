@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   Platform,
   ScrollView,
@@ -15,8 +15,9 @@ import {useTheme} from '@shopify/restyle';
 import {getScreenHeight} from '../../utils/commonServices';
 import {AppDispatch, RootState} from '../../redux/store';
 import {ColorTheme, Theme} from '../../theme';
-import {Box, CustomHeader, Text} from '../../components';
+import {Box, CustomHeader, CustomImage, Text} from '../../components';
 import {logoutThunk} from '../../redux/auth';
+import {getAssetsThunk} from '../../redux/assets';
 
 const Profile = () => {
   const theme = useTheme<Theme>();
@@ -27,16 +28,33 @@ const Profile = () => {
 
   const styles = useMemo(() => createStyles(colors), [colors]);
 
+  const [pic, setPic] = useState<null | string | undefined>(null);
+
+  const getUserPic = useCallback(
+    async (key: string) => {
+      const res = await dispatch(getAssetsThunk(key));
+      if (res.meta.requestStatus === 'fulfilled') {
+        setPic(res.payload as string | null | undefined);
+      }
+    },
+    [dispatch],
+  );
+
   useEffect(() => {
     if (Platform.OS === 'android') {
       StatusBar.setBackgroundColor(colors.mainBackground);
       StatusBar.setBarStyle('dark-content');
     }
-  }, [colors?.mainBackground]);
+    if (userData?.pic) {
+      getUserPic(userData?.pic);
+    }
+  }, [colors.mainBackground, getUserPic, userData?.pic]);
 
   const logout = () => {
     dispatch(logoutThunk());
   };
+
+  console.log(pic);
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
@@ -44,13 +62,22 @@ const Profile = () => {
 
       <Box margin="s" flex={1} backgroundColor="mainBackground">
         <ScrollView>
-          <Text variant="heading">
+          <Text variant="heading" color="mainForeground">
             {t('appNamespace.welcome')}, {userData?.name}
           </Text>
+
+          <Box my="l" alignSelf="center">
+            <CustomImage uri={pic} disabled={true} />
+          </Box>
+
+          <Text variant="title">{userData?.email}</Text>
+
+          <TouchableOpacity onPress={logout} style={styles.action}>
+            <Text variant="title" color="error">
+              logout
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
-        <TouchableOpacity onPress={logout} style={styles.action}>
-          <Text variant="title">logout</Text>
-        </TouchableOpacity>
       </Box>
     </SafeAreaView>
   );
@@ -62,12 +89,10 @@ const createStyles = (theme: ColorTheme) => {
       flex: 1,
       backgroundColor: theme.mainBackground,
     },
-    title: {
-      color: theme.mainBackground,
-      fontSize: getScreenHeight(2),
-    },
+
     action: {
       alignSelf: 'flex-start',
+      marginTop: getScreenHeight(5),
     },
   });
 };

@@ -6,6 +6,18 @@ import {setLoading} from '../redux/common';
 import {store} from '../redux/store';
 import api from '../constants/api';
 
+type apiCallProps = {
+  hasImage?: 0 | 1;
+  type: string;
+  url: string;
+  data?: Object;
+  params?: Object;
+  enableLoader?: boolean;
+  extraAdditionToHeader?: null | Object;
+  replaceHeaders?: null | Object;
+  cancelToken?: any;
+};
+
 const getInstance = ({
   hasImage,
   data,
@@ -18,9 +30,6 @@ const getInstance = ({
   const instance = axios.create({
     baseURL: api.baseUrl.STAGING_URL,
   });
-
-  // const {CancelToken} = axios;
-  // const source = CancelToken.source();
 
   function isTokenExpired() {
     if (!authToken) {
@@ -113,9 +122,8 @@ const apiCall = async ({
   enableLoader = true,
   extraAdditionToHeader = null,
   replaceHeaders = null,
-  source,
   cancelToken,
-}: any) => {
+}: apiCallProps) => {
   if (enableLoader) {
     store.dispatch(setLoading(true));
   }
@@ -124,7 +132,6 @@ const apiCall = async ({
     data,
     params,
     extraAdditionToHeader,
-    source,
     cancelToken,
     replaceHeaders,
   });
@@ -132,25 +139,25 @@ const apiCall = async ({
     switch (type) {
       case api.apiTypes.post: {
         let response = await instance.post(url);
-        return response?.data ? response.data : response;
+        return response?.data;
       }
       case api.apiTypes.patch: {
         let response = await instance.patch(url);
-        return response?.data ? response.data : response;
+        return response?.data;
       }
       case api.apiTypes.put: {
         let response = await instance.put(url);
-        return response?.data ? response.data : response;
+        return response?.data;
       }
 
       case api.apiTypes.delete: {
         let response = await instance.delete(url);
-        return response?.data ? response.data : response;
+        return response?.data;
       }
 
       case api.apiTypes.get: {
         let response = await instance.get(url);
-        return response?.data ? response.data : response;
+        return response?.data;
       }
 
       default: {
