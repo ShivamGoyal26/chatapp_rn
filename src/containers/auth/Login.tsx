@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {useForm, Controller, SubmitHandler} from 'react-hook-form';
 import {useTheme} from '@shopify/restyle';
@@ -17,7 +17,7 @@ import axios from 'axios';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
-import {AppDispatch, RootState} from '../../redux/store';
+import {AppDispatch} from '../../redux/store';
 import {emailRegex} from '../../utils/regex';
 import {ColorTheme, Theme} from '../../theme';
 import {loginThunk} from '../../redux/auth';
@@ -36,7 +36,6 @@ const Login = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
-  const userData = useSelector((state: RootState) => state.auth.userData);
   const dispatch: AppDispatch = useDispatch();
 
   const styles = useMemo(() => createStyles(colors), [colors]);
@@ -72,7 +71,7 @@ const Login = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <SafeAreaView edges={['top']} style={styles.safe}>
       <CustomHeader title={t('appNamespace.login')} />
 
       <KeyboardAwareScrollView

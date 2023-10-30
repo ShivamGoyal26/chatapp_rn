@@ -1,12 +1,18 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 // Files
-import {LoginInputData, SignUpInputData} from '../../types/auth';
+import {LoginInputData, SignUpInputData, UserData} from '../../types/auth';
 import api from '../../constants/api';
 import apiCall from '../../services/apiCall';
 import toast from '../../utils/toast';
+import {resetCommonSlice} from '../common';
+import {resetRoot} from '../../utils/routerServices';
+import {Routes} from '../../constants';
 
-const initialState = {
+const initialState: {
+  userData: UserData | null;
+  authToken: string | null;
+} = {
   userData: null,
   authToken: null,
 };
@@ -25,6 +31,18 @@ const authSlice = createSlice({
   },
 });
 
+export const logoutThunk = createAsyncThunk(
+  'auth/logoutThunk',
+  async (_, {dispatch}) => {
+    return new Promise(() => {
+      dispatch(resetAuthSlice());
+      dispatch(resetCommonSlice());
+      resetRoot(Routes.AUTH_STACK);
+      // resolve('logout done');
+    });
+  },
+);
+
 export const loginThunk = createAsyncThunk(
   'auth/loginThunk',
   async (data: {data: LoginInputData; cancelToken: any}, {dispatch}) => {
@@ -38,6 +56,7 @@ export const loginThunk = createAsyncThunk(
       if (res?.status) {
         dispatch(setUserData(res.data));
         dispatch(setAuthToken(res.data.token));
+        resetRoot(Routes.HOME_STACK);
         resolve(res);
       } else {
         if (res?.message !== 'Cancelled') {
@@ -62,6 +81,7 @@ export const registerThunk = createAsyncThunk(
       if (res?.status) {
         dispatch(setUserData(res.data));
         dispatch(setAuthToken(res.data.token));
+        resetRoot(Routes.HOME_STACK);
         resolve(res);
       } else {
         if (res?.message !== 'Cancelled') {

@@ -21,6 +21,7 @@ const commonSlice = createSlice({
   },
 });
 
-export const {setLoading, setIsInternet} = commonSlice.actions;
+export const {setLoading, setIsInternet, resetCommonSlice} =
+  commonSlice.actions;
 
 export default commonSlice.reducer;

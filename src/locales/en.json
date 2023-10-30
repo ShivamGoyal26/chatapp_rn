@@ -21,7 +21,11 @@
     "camera": "camera",
     "gallery": "gallery",
     "selectChoice": "please select choice",
-    "galleryOrCamera": "gallery or camera"
+    "galleryOrCamera": "gallery or camera",
+    "chats": "chats",
+    "search": "search",
+    "profile": "profile",
+    "welcome": "welcome"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",

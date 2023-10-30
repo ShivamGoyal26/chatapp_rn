@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 
 type StorageHookResult<T> = {
   value: T;
@@ -30,31 +30,34 @@ const useAsyncStorage = <T>(
     loadData();
   }, [key]);
 
-  const setStoredValue = async (newValue: T) => {
-    try {
-      setValue(newValue);
-      await AsyncStorage.setItem(key, JSON.stringify(newValue));
-    } catch (error) {
-      console.error('Error storing data in AsyncStorage:', error);
-    }
-  };
+  const setStoredValue = useCallback(
+    async (newValue: T) => {
+      try {
+        setValue(newValue);
+        await AsyncStorage.setItem(key, JSON.stringify(newValue));
+      } catch (error) {
+        console.error('Error storing data in AsyncStorage:', error);
+      }
+    },
+    [key],
+  );
 
-  const clearStoredValue = async () => {
+  const clearStoredValue = useCallback(async () => {
     try {
       setValue(initialValue);
       await AsyncStorage.removeItem(key);
     } catch (error) {
       console.error('Error removing data from AsyncStorage:', error);
     }
-  };
+  }, [initialValue, key]);
 
-  const clearAllStoredKeys = async () => {
+  const clearAllStoredKeys = useCallback(async () => {
     try {
       await AsyncStorage.clear();
     } catch (error) {
       console.error('Error clearing all keys in AsyncStorage:', error);
     }
-  };
+  }, []);
 
   return {
     value,

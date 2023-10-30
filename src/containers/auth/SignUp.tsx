@@ -81,7 +81,7 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <SafeAreaView edges={['top']} style={styles.safe}>
       <CustomHeader
         leftIconColor={colors.mainForeground}
         leftAction={goBack}

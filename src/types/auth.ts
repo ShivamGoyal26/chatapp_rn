@@ -8,3 +8,11 @@ export type SignUpInputData = {
   email: string;
   password: string;
 };
+
+export type UserData = {
+  name: string;
+  email: string;
+  pic: string;
+  token: string;
+  id: string;
+};

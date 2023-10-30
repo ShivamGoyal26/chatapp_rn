@@ -23,7 +23,7 @@ export const theme = createTheme({
     mainForeground: palette.black,
 
     primaryCardBackground: palette.purple,
-    secondaryCardBackground: palette.white,
+    secondaryCardBackground: palette.purple,
     primaryCardText: palette.white,
     secondaryCardText: palette.black,
     error: palette.lightRose,
@@ -91,7 +91,7 @@ export const darkTheme: Theme = {
     mainBackground: palette.black,
     mainForeground: palette.white,
 
-    secondaryCardBackground: palette.darkGray,
+    secondaryCardBackground: palette.purple,
     secondaryCardText: palette.white,
 
     primaryCardBackground: palette.white,
