@@ -29,7 +29,9 @@
     "searchUsers": "search users",
     "joinedAt": "joined at",
     "endOfResults": "end of results",
-    "noResultsFound": "no results found"
+    "noResultsFound": "no results found",
+    "weAreOnline": "we are online",
+    "noInternet": "oops! no internet connection"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",

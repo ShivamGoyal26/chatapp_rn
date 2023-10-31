@@ -15,5 +15,6 @@ export default {
     UPLOAD_ASSET_URL: '/assets/put',
     GET_ASSET_URL: '/assets/get',
     FIND_USER: '/user/findusers',
+    CREATE_CHAT: '/chat/createchat',
   },
 };

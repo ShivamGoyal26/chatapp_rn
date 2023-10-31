@@ -12,6 +12,7 @@ import {useTranslation} from 'react-i18next';
 import {useForm, Controller, SubmitHandler} from 'react-hook-form';
 import {useTheme} from '@shopify/restyle';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Lottie from 'lottie-react-native';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
@@ -19,7 +20,7 @@ import {AppDispatch} from '../../redux/store';
 import {emailRegex} from '../../utils/regex';
 import {ColorTheme, Theme} from '../../theme';
 import {SignUpInputData} from '../../types/auth';
-import {Images} from '../../constants';
+import {Images, Lotties} from '../../constants';
 import {
   Box,
   CustomButton,
@@ -106,6 +107,12 @@ const SignUp = () => {
         enableAutomaticScroll={Platform.OS === 'ios'}
         contentContainerStyle={{flexGrow: 1}}>
         <Box margin="s" flex={1} backgroundColor="mainBackground">
+          <Lottie
+            style={theme.cardVariants.lottie}
+            source={Lotties.signUp}
+            autoPlay
+            loop
+          />
           <Box mb="l" alignSelf="center">
             <CustomImage uri={image?.uri} action={pickImage} />
           </Box>

@@ -19,7 +19,7 @@ import {Box, CustomHeader, Text, UserItem, UserSearch} from '../../components';
 import {findUsersThunk} from '../../redux/auth';
 import {SearchUsersRequestData, SearchedUser} from '../../types/common';
 
-const PER_POST_LIMIT = 2;
+const PER_POST_LIMIT = 10;
 
 const RenderSeparator = () => {
   return (
@@ -39,10 +39,6 @@ const SearchUsers = () => {
   const styles = useMemo(() => createStyles(colors), [colors]);
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<SearchedUser[]>([]);
-  // const [
-  //   onEndReachedCalledDuringMomentum,
-  //   setOnEndReachedCalledDuringMomentum,
-  // ] = useState<boolean>(false);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -59,7 +55,7 @@ const SearchUsers = () => {
         limit: PER_POST_LIMIT,
         page: currentPageRef.current,
       };
-      console.log(data);
+
       const res: any = await dispatch(findUsersThunk(data));
       if (res.meta.requestStatus === 'fulfilled') {
         setUsers(pre => pre.concat(res.payload.data));

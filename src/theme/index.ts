@@ -9,6 +9,8 @@ const palette = {
   darkGray: '#A9A9A9',
   lightGray: '#EEE',
   lightRose: '#f1807e',
+  lightGreen: '#E4F9E2',
+  green: '#28B446',
 };
 
 export const theme = createTheme({
@@ -27,6 +29,7 @@ export const theme = createTheme({
     primaryCardText: palette.white,
     secondaryCardText: palette.black,
     error: palette.lightRose,
+    success: palette.green,
 
     borderColor: palette.darkGray,
   },
@@ -77,6 +80,11 @@ export const theme = createTheme({
     secondary: {
       backgroundColor: 'secondaryCardBackground',
       shadowOpacity: 0.1,
+    },
+    lottie: {
+      height: getScreenHeight(35),
+      width: getScreenHeight(35),
+      alignSelf: 'center',
     },
   },
 });

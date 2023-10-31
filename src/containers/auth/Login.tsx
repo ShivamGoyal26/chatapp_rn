@@ -14,6 +14,7 @@ import {useForm, Controller, SubmitHandler} from 'react-hook-form';
 import {useTheme} from '@shopify/restyle';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
+import Lottie from 'lottie-react-native';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
@@ -23,7 +24,7 @@ import {ColorTheme, Theme} from '../../theme';
 import {loginThunk} from '../../redux/auth';
 import {LoginInputData} from '../../types/auth';
 import {navigate} from '../../utils/routerServices';
-import {Images, Routes} from '../../constants';
+import {Images, Lotties, Routes} from '../../constants';
 import {
   Box,
   CustomButton,
@@ -36,7 +37,7 @@ const Login = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const styles = useMemo(() => createStyles(colors), [colors]);
   const emailRef = useRef<TextInput>(null);
@@ -82,6 +83,12 @@ const Login = () => {
         enableAutomaticScroll={Platform.OS === 'ios'}
         contentContainerStyle={{flexGrow: 1}}>
         <Box margin="s" flex={1} backgroundColor="mainBackground">
+          <Lottie
+            style={theme.cardVariants.lottie}
+            source={Lotties.login}
+            autoPlay
+            loop
+          />
           <Box marginBottom="m">
             <Controller
               name="email"

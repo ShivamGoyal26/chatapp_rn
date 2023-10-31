@@ -8,3 +8,4 @@ export {default as CustomImage} from './common/CustomImage';
 export {default as FullScreenLoader} from './common/FullScreenLoader';
 export {default as UserSearch} from './users/UserSearch';
 export {default as UserItem} from './users/UserItem';
+export {default as InternetConnection} from './common/InternetConnection';
