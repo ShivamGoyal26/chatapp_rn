@@ -19,7 +19,7 @@ import {Box, CustomHeader, Text, UserItem, UserSearch} from '../../components';
 import {findUsersThunk} from '../../redux/auth';
 import {SearchUsersRequestData, SearchedUser} from '../../types/common';
 
-const PER_POST_LIMIT = 10;
+const PER_POST_LIMIT = 2;
 
 const RenderSeparator = () => {
   return (
@@ -35,15 +35,14 @@ const SearchUsers = () => {
   const totalPagesRef = useRef<number>(1);
   const currentPageRef = useRef<number>(1);
   const userInputRef = useRef<string>('');
-  const isScrollingRef = useRef<boolean>(false);
 
   const styles = useMemo(() => createStyles(colors), [colors]);
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<SearchedUser[]>([]);
-  const [
-    onEndReachedCalledDuringMomentum,
-    setOnEndReachedCalledDuringMomentum,
-  ] = useState<boolean>(false);
+  // const [
+  //   onEndReachedCalledDuringMomentum,
+  //   setOnEndReachedCalledDuringMomentum,
+  // ] = useState<boolean>(false);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -60,6 +59,7 @@ const SearchUsers = () => {
         limit: PER_POST_LIMIT,
         page: currentPageRef.current,
       };
+      console.log(data);
       const res: any = await dispatch(findUsersThunk(data));
       if (res.meta.requestStatus === 'fulfilled') {
         setUsers(pre => pre.concat(res.payload.data));
@@ -89,30 +89,28 @@ const SearchUsers = () => {
   );
 
   const onEndReached = useCallback(() => {
+    console.log('onEndReached');
     if (
       userInputRef.current &&
-      totalPagesRef.current > currentPageRef.current &&
-      !onEndReachedCalledDuringMomentum
+      totalPagesRef.current > currentPageRef.current
     ) {
-      setOnEndReachedCalledDuringMomentum(true);
       currentPageRef.current = currentPageRef.current + 1;
       findUsers(userInputRef.current);
-      isScrollingRef.current = false;
     }
-  }, [findUsers, onEndReachedCalledDuringMomentum]);
+  }, [findUsers]);
 
   const renderFotter = useCallback(() => {
-    return users.length ? (
+    return users.length && totalPagesRef.current === currentPageRef.current ? (
       <Text textAlign="center" marginBottom="l" variant="subtitle">
         {t('appNamespace.endOfResults')}
       </Text>
     ) : loading ? (
       <ActivityIndicator
-        style={{marginTop: getScreenHeight(2)}}
-        color={colors.secondaryCardBackground}
+        style={{marginBottom: getScreenHeight(2)}}
+        color={colors.borderColor}
       />
     ) : null;
-  }, [colors.secondaryCardBackground, loading, t, users.length]);
+  }, [colors.borderColor, loading, t, users.length]);
 
   const renderEmpty = useCallback(() => {
     return userInputRef.current && !loading ? (
@@ -137,10 +135,6 @@ const SearchUsers = () => {
           ListFooterComponent={renderFotter}
           ListEmptyComponent={renderEmpty}
           ItemSeparatorComponent={RenderSeparator}
-          onMomentumScrollBegin={() => {
-            isScrollingRef.current = true;
-            setOnEndReachedCalledDuringMomentum(() => false);
-          }}
         />
       </Box>
     </SafeAreaView>

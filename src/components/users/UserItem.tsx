@@ -1,20 +1,17 @@
-import {useTheme} from '@shopify/restyle';
-import React, {memo, useEffect, useMemo, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {memo} from 'react';
+import dayjs from 'dayjs';
+import {useTranslation} from 'react-i18next';
 
 // Files
-import {ColorTheme, Theme} from '../../theme';
 import Box from '../Box';
-import {useTranslation} from 'react-i18next';
 import Text from '../Text';
 import {SearchedUser} from '../../types/common';
-import dayjs from 'dayjs';
 import {getScreenHeight} from '../../utils/commonServices';
 
 const UserItem = ({name, createdAt}: SearchedUser) => {
   const {t} = useTranslation();
   return (
-    <Box flexDirection="row" marginVertical="l">
+    <Box flexDirection="row" alignItems="center" marginVertical="l">
       <Box
         borderRadius={getScreenHeight(100)}
         width={getScreenHeight(8)}
