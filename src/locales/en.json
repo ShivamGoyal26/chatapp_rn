@@ -25,7 +25,8 @@
     "chats": "chats",
     "search": "search",
     "profile": "profile",
-    "welcome": "welcome"
+    "welcome": "welcome",
+    "searchUsers": "search users"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",

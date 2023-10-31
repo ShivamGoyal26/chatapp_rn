@@ -32,9 +32,11 @@ const Profile = () => {
 
   const getUserPic = useCallback(
     async (key: string) => {
-      const res = await dispatch(getAssetsThunk(key));
-      if (res.meta.requestStatus === 'fulfilled') {
-        setPic(res.payload as string | null | undefined);
+      if (key) {
+        const res = await dispatch(getAssetsThunk(key));
+        if (res.meta.requestStatus === 'fulfilled') {
+          setPic(res.payload as string | null | undefined);
+        }
       }
     },
     [dispatch],
@@ -53,8 +55,6 @@ const Profile = () => {
   const logout = () => {
     dispatch(logoutThunk());
   };
-
-  console.log(pic);
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>

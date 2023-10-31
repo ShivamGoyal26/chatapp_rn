@@ -6,3 +6,4 @@ export {default as Text} from './Text';
 export {default as CustomModalLoading} from './common/CustomModalLoading';
 export {default as CustomImage} from './common/CustomImage';
 export {default as FullScreenLoader} from './common/FullScreenLoader';
+export {default as UserSearch} from './common/UserSearch';

@@ -70,9 +70,7 @@ export const uploadAssetsThunk = createAsyncThunk(
             Spinner.hide();
           });
       } else {
-        if (res?.message !== 'Cancelled') {
-          toast.showErrorMessage(res?.message);
-        }
+        toast.showErrorMessage(res?.message);
         reject(res);
         Spinner.hide();
       }

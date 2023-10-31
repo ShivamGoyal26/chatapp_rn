@@ -6,3 +6,9 @@ export type PickImageType = {
   type: string;
   uri: string;
 };
+
+export type SearchUsersRequestData = {
+  page: number;
+  limit: number;
+  search: string;
+};

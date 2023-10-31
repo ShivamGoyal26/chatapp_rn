@@ -8,6 +8,7 @@ import toast from '../../utils/toast';
 import {resetCommonSlice} from '../common';
 import {resetRoot} from '../../utils/routerServices';
 import {Routes} from '../../constants';
+import {SearchUsersRequestData} from '../../types/common';
 
 const initialState: {
   userData: UserData | null;
@@ -59,9 +60,7 @@ export const loginThunk = createAsyncThunk(
         resetRoot(Routes.HOME_STACK);
         resolve(res);
       } else {
-        if (res?.message !== 'Cancelled') {
-          toast.showErrorMessage(res?.message);
-        }
+        toast.showErrorMessage(res?.message);
         reject(res?.message);
       }
     });
@@ -92,9 +91,27 @@ export const registerThunk = createAsyncThunk(
         resetRoot(Routes.HOME_STACK);
         resolve(res);
       } else {
-        if (res?.message !== 'Cancelled') {
-          toast.showErrorMessage(res?.message);
-        }
+        toast.showErrorMessage(res?.message);
+        reject(res?.message);
+      }
+    });
+  },
+);
+
+export const findUsersThunk = createAsyncThunk(
+  'auth/findUsersThunk',
+  async (data: SearchUsersRequestData, {dispatch}) => {
+    return new Promise(async (resolve, reject) => {
+      let res = await apiCall({
+        type: api.apiTypes.get,
+        url: api.endpoints.FIND_USER,
+        // cancelToken: data.cancelToken,
+        params: data,
+      });
+      console.log(res);
+      if (res.status) {
+      } else {
+        toast.showErrorMessage(res?.message);
         reject(res?.message);
       }
     });

@@ -1,10 +1,11 @@
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
 
 // Files
 import {setLoading} from '../redux/common';
 import {store} from '../redux/store';
 import api from '../constants/api';
+import {isTokenExpired} from '../utils/tokens';
+import {logoutThunk} from '../redux/auth';
 
 type apiCallProps = {
   hasImage?: 0 | 1;
@@ -30,18 +31,6 @@ const getInstance = ({
   const instance = axios.create({
     baseURL: api.baseUrl.STAGING_URL,
   });
-
-  function isTokenExpired() {
-    if (!authToken) {
-      return true;
-    }
-    const decodedToken = jwtDecode(authToken); // Assuming you are using a JWT access token
-    const expirationTime = decodedToken.exp * 1000; // Convert expiration time to milliseconds
-
-    // Compare the current time with the expiration time
-    const currentTime = Date.now();
-    return currentTime >= expirationTime;
-  }
 
   instance.interceptors.request.use(
     (request: any) => {
@@ -82,9 +71,14 @@ const getInstance = ({
       return response;
     },
     function (error) {
-      console.log('ERROR');
-      if (error?.response?.status === 401 && isTokenExpired()) {
-        // store.dispatch(signOutManager());
+      if (error?.response?.status === 401 && isTokenExpired(authToken)) {
+        store.dispatch(logoutThunk());
+        throw new Error(
+          error?.response?.data?.message
+            ? error?.response?.data?.message
+            : 'Something went wrong!',
+        );
+
         // throw new Error(localization.sessionExpired);
         // // Refresh the token and resend the original request
         // return refreshAccessToken().then(newToken => {
@@ -166,7 +160,6 @@ const apiCall = async ({
       }
     }
   } catch (error: any) {
-    console.log('Error in catch', error.message);
     return {
       status: false,
       message: error?.message,

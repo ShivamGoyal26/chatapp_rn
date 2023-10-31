@@ -8,6 +8,9 @@ const showSuccessMessage = (message: string) => {
 };
 
 const showErrorMessage = (message: string) => {
+  if (message === 'Cancelled') {
+    return;
+  }
   showMessage({
     message: message ? message : 'Something went wrong!',
     type: 'danger',

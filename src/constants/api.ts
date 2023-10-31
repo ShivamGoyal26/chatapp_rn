@@ -14,5 +14,6 @@ export default {
     SIGNUP_URL: '/user/register',
     UPLOAD_ASSET_URL: '/assets/put',
     GET_ASSET_URL: '/assets/get',
+    FIND_USER: '/user/findusers',
   },
 };
