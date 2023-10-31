@@ -108,8 +108,8 @@ export const findUsersThunk = createAsyncThunk(
         // cancelToken: data.cancelToken,
         params: data,
       });
-      console.log(res);
       if (res.status) {
+        resolve({data: res.data, pages: res.pages});
       } else {
         toast.showErrorMessage(res?.message);
         reject(res?.message);

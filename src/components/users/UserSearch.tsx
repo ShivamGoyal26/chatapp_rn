@@ -23,10 +23,7 @@ const UserSearch = ({action}: UserSearchProps) => {
   const debouncedValue = useDebounce(searchQuery, 500);
 
   useEffect(() => {
-    //   console.log('debouncedValue', debouncedValue);
-    if (debouncedValue) {
-      action(debouncedValue);
-    }
+    action(debouncedValue);
   }, [action, debouncedValue]);
 
   return (

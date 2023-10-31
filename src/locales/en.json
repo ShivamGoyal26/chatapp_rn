@@ -26,7 +26,10 @@
     "search": "search",
     "profile": "profile",
     "welcome": "welcome",
-    "searchUsers": "search users"
+    "searchUsers": "search users",
+    "joinedAt": "joined at",
+    "endOfResults": "end of results",
+    "noResultsFound": "no results found"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",

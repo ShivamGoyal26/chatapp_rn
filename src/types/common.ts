@@ -12,3 +12,11 @@ export type SearchUsersRequestData = {
   limit: number;
   search: string;
 };
+
+export type SearchedUser = {
+  _id: string;
+  createdAt: string;
+  name: string;
+  updatedAt: string;
+  pic: string | null;
+};
