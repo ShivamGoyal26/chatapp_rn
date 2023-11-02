@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Config from 'react-native-config';
 
 // Files
 import {setLoading} from '../redux/common';
@@ -29,7 +30,7 @@ const getInstance = ({
 }: any) => {
   const authToken = store.getState().auth.authToken;
   const instance = axios.create({
-    baseURL: api.baseUrl.STAGING_URL,
+    baseURL: Config.API_URL,
   });
 
   instance.interceptors.request.use(

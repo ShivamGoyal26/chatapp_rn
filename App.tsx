@@ -15,6 +15,7 @@ import {
   onlineManager,
 } from '@tanstack/react-query';
 import FlashMessage from 'react-native-flash-message';
+import Config from 'react-native-config';
 
 // Files
 import './src/locales/index'; // import i18n (needs to be bundled ;))
@@ -24,6 +25,7 @@ import {persistor, store} from './src/redux/store';
 import {darkTheme, theme} from './src/theme';
 import {Fonts} from './src/constants';
 import {getScreenHeight} from './src/utils/commonServices';
+import {Text} from './src/components';
 
 onlineManager.setEventListener(setOnline => {
   return NetInfo.addEventListener(state => {
@@ -56,6 +58,7 @@ const App = () => {
             <SafeAreaProvider>
               <NavigationContainer ref={NavigationRef}>
                 <FlashMessage titleStyle={styles.title} position="top" />
+                <Text variant={'heading'}>{Config.ENV} Testing</Text>
                 <MainStack />
               </NavigationContainer>
             </SafeAreaProvider>

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import {
   Keyboard,
   Platform,
@@ -60,7 +60,6 @@ const CreateGroup = () => {
         .getSelectedItem()
         ?.map((item: SelectUserData) => item._id),
     };
-
     dispatch(createGroupThunk(finalData));
   };
 

@@ -28,7 +28,7 @@ const chatSlice = createSlice({
 
 export const getUserChatsThunk = createAsyncThunk(
   'chat/getUserChatsThunk',
-  async (userChatParams: PageProps, {dispatch}) => {
+  async (userChatParams: PageProps) => {
     return new Promise(async (resolve, reject) => {
       let res = await apiCall({
         type: api.apiTypes.get,
@@ -47,7 +47,7 @@ export const getUserChatsThunk = createAsyncThunk(
 
 export const createGroupThunk = createAsyncThunk(
   'chat/createGroupThunk',
-  async (data: CreateGroupBody, {dispatch}) => {
+  async (data: CreateGroupBody) => {
     if (!data?.name) {
       return toast.showErrorMessage(t('messagesNamespace.groupName'));
     }
