@@ -9,3 +9,8 @@ export type ChatItem = {
   updatedAt: string;
   isGroupChat: boolean;
 };
+
+export type CreateGroupBody = {
+  users: string[];
+  name: string;
+};

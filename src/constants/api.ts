@@ -17,5 +17,6 @@ export default {
     FIND_USER: '/user/findusers',
     CREATE_CHAT: '/chat/createchat',
     USER_CHATS: '/chat/alluserchats',
+    CREATE_GROUP: '/chat/creategroup',
   },
 };

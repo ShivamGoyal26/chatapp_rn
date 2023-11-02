@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useTheme} from '@shopify/restyle';
 import {useTranslation} from 'react-i18next';
 
@@ -9,7 +9,7 @@ import {Profile, SearchUsers} from '../containers';
 import {Images, Routes} from '../constants';
 import Chats from '../containers/chat/Chats';
 import {Text} from '../components';
-import {Theme} from '../theme';
+import {ColorTheme, Theme} from '../theme';
 import {getScreenHeight} from '../utils/commonServices';
 
 const Tab = createBottomTabNavigator();
@@ -22,18 +22,27 @@ const TabButton = (props: any) => {
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
-      <Image
-        resizeMode="contain"
-        source={item.icon}
-        style={[
-          styles.icon,
-          {
-            tintColor: focused
-              ? colors.secondaryCardBackground
-              : colors.mainForeground,
-          },
-        ]}
-      />
+      <View>
+        {item.badges ? (
+          <View style={styles.badgeContainer}>
+            <Text color={'mainBackground'} variant={'heading'}>
+              {item.badges}
+            </Text>
+          </View>
+        ) : null}
+        <Image
+          resizeMode="contain"
+          source={item.icon}
+          style={[
+            styles.icon,
+            {
+              tintColor: focused
+                ? colors.secondaryCardBackground
+                : colors.mainForeground,
+            },
+          ]}
+        />
+      </View>
       <Text
         variant="title"
         style={{
@@ -51,6 +60,7 @@ const BottomBar = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const screens = [
     {
@@ -87,7 +97,7 @@ const BottomBar = () => {
         tabBarStyle: {
           backgroundColor: colors.mainBackground,
           height: getScreenHeight(8),
-          borderTopWidth: 0,
+          // borderTopWidth: 0,
           width: '100%',
           alignSelf: 'center',
           // borderRadius: 60,
@@ -100,7 +110,6 @@ const BottomBar = () => {
           <Tab.Screen
             key={key}
             options={{
-              tabBarBadge: 10,
               tabBarButton: props =>
                 item.hide ? null : (
                   <TabButton styles={styles} {...props} item={item} />
@@ -115,18 +124,30 @@ const BottomBar = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  icon: {
-    height: 20,
-    width: 20,
-    tintColor: 'white',
-  },
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    height: getScreenHeight(8),
-  },
-});
+const createStyles = (theme: ColorTheme) => {
+  return StyleSheet.create({
+    icon: {
+      height: getScreenHeight(2.5),
+      width: getScreenHeight(2.5),
+    },
+    container: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1,
+      height: getScreenHeight(8),
+    },
+    badgeContainer: {
+      paddingHorizontal: getScreenHeight(0.8),
+      backgroundColor: theme.error,
+      position: 'absolute',
+      zIndex: 10,
+      top: -getScreenHeight(1),
+      right: -getScreenHeight(2.4),
+      borderRadius: getScreenHeight(100),
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });
+};
 
 export default BottomBar;

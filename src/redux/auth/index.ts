@@ -105,6 +105,7 @@ export const findUsersThunk = createAsyncThunk(
       let res = await apiCall({
         type: api.apiTypes.get,
         url: api.endpoints.FIND_USER,
+        enableLoader: false,
         // cancelToken: data.cancelToken,
         params: data,
       });

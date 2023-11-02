@@ -6,4 +6,7 @@ export default {
   corruptImage: require('../assets/images/corruptImage.png'),
   search: require('../assets/images/search.png'),
   chats: require('../assets/images/chats.png'),
+  plus: require('../assets/images/plus.png'),
+  check: require('../assets/images/check.png'),
+  remove: require('../assets/images/remove.png'),
 };

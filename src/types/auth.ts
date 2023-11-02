@@ -1,3 +1,5 @@
+import {SearchedUser} from './common';
+
 export type LoginInputData = {
   email: string;
   password: string;
@@ -17,4 +19,8 @@ export type UserData = {
   pic: string;
   token: string;
   id: string;
+};
+
+export type SelectUserData = SearchedUser & {
+  isSelected: boolean;
 };

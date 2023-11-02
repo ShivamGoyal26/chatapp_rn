@@ -2,8 +2,10 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import apiCall from '../../services/apiCall';
 import api from '../../constants/api';
 import toast from '../../utils/toast';
-import {ChatItem} from '../../types/chat';
+import {ChatItem, CreateGroupBody} from '../../types/chat';
 import {PageProps} from '../../types/common';
+import {t} from 'i18next';
+import {goBack} from '../../utils/routerServices';
 
 // Files
 
@@ -35,6 +37,34 @@ export const getUserChatsThunk = createAsyncThunk(
       });
       if (res?.status) {
         resolve({data: res.data, pages: res.pages});
+      } else {
+        toast.showErrorMessage(res?.message);
+        reject(res?.message);
+      }
+    });
+  },
+);
+
+export const createGroupThunk = createAsyncThunk(
+  'chat/createGroupThunk',
+  async (data: CreateGroupBody, {dispatch}) => {
+    if (!data?.name) {
+      return toast.showErrorMessage(t('messagesNamespace.groupName'));
+    }
+    if (data.users?.length < 2) {
+      return toast.showErrorMessage(t('messagesNamespace.leastGroupMembers'));
+    }
+    return new Promise(async (resolve, reject) => {
+      let res = await apiCall({
+        type: api.apiTypes.post,
+        url: api.endpoints.CREATE_GROUP,
+        data: data,
+      });
+      if (res?.status) {
+        console.log('This is the res', res);
+        goBack();
+        toast.showSuccessMessage(res.message);
+        // resolve({data: res.data, pages: res.pages});
       } else {
         toast.showErrorMessage(res?.message);
         reject(res?.message);

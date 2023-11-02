@@ -19,6 +19,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../redux/store';
 import {getUserChatsThunk} from '../../redux/chat';
 import {ChatItem as ChatItemProps} from '../../types/chat';
+import images from '../../constants/images';
+import {navigate} from '../../utils/routerServices';
+import {Routes} from '../../constants';
 
 const PER_CHAT_LIMIT = 10;
 
@@ -106,7 +109,11 @@ const Chats = () => {
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
-      <CustomHeader title={t('appNamespace.chats')} />
+      <CustomHeader
+        rightAction={() => navigate(Routes.CREATE_GROUP, {})}
+        rightIcon={images.plus}
+        title={t('appNamespace.chats')}
+      />
 
       <Box
         // justifyContent={{phone: 'center', tablet: 'space-around'}}

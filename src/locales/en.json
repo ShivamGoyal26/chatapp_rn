@@ -31,7 +31,9 @@
     "endOfResults": "end of results",
     "noResultsFound": "no results found",
     "weAreOnline": "we are online",
-    "noInternet": "oops! no internet connection"
+    "noInternet": "oops! no internet connection",
+    "createGroup": "Create Group",
+    "members": "members"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",
@@ -43,6 +45,8 @@
     "validPassword": "password must be at least 6 characters",
     "selectValidImage": "please select a valid image",
     "cameraNotAvailable": "camera not available on this device",
-    "corruptedImage": "image is corrupted, please pick other"
+    "corruptedImage": "image is corrupted, please pick other",
+    "groupName": "please enter the group name",
+    "leastGroupMembers": "please add atleast 2 members in group"
   }
 }

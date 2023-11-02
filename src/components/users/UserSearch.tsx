@@ -18,7 +18,8 @@ const UserSearch = ({action}: UserSearchProps) => {
 
   useEffect(() => {
     action(debouncedValue);
-  }, [action, debouncedValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
   return (
     <Box mb="m">

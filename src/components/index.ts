@@ -10,3 +10,6 @@ export {default as UserSearch} from './users/UserSearch';
 export {default as UserItem} from './users/UserItem';
 export {default as InternetConnection} from './common/InternetConnection';
 export {default as ChatItem} from './chat/ChatItem';
+export {default as LoadUsers} from './users/LoadUsers';
+export {default as SelectUserItem} from './users/SelectUserItem';
+export {default as SelectUsers} from './chat/SelectUsers';

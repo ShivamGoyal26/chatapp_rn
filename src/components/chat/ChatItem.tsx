@@ -43,6 +43,9 @@ const ChatItem = ({
             : users[0].name}
         </Text>
         <Text numberOfLines={1} variant="subtitle">
+          {users.length} {t('appNamespace.members')}
+        </Text>
+        <Text numberOfLines={1} variant="subtitle">
           {dayjs(updatedAt).fromNow()}
         </Text>
       </Box>
