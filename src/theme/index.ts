@@ -20,6 +20,10 @@ export const theme = createTheme({
     m: getScreenHeight(1.5),
     l: getScreenHeight(2),
   },
+  breakpoints: {
+    phone: 0,
+    tablet: 768,
+  },
   colors: {
     mainBackground: palette.lightGray,
     mainForeground: palette.black,
@@ -85,6 +89,29 @@ export const theme = createTheme({
       height: getScreenHeight(35),
       width: getScreenHeight(35),
       alignSelf: 'center',
+    },
+    elevated: {
+      padding: {
+        phone: 's',
+        tablet: 'm',
+      },
+      shadowColor: '#000',
+      shadowOpacity: 0.2,
+      shadowOffset: {width: 0, height: 5},
+      shadowRadius: 15,
+      elevation: 5,
+    },
+  },
+
+  buttonVariants: {
+    primary: {
+      backgroundColor: 'primaryCardBackground',
+      borderColor: 'primaryCardBackground',
+      color: 'white',
+    },
+    outlined: {
+      borderColor: 'primaryCardBackground',
+      color: 'primaryCardBackground',
     },
   },
 });

@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
+  I18nManager,
   Platform,
   ScrollView,
   StatusBar,
@@ -54,6 +55,7 @@ const Profile = () => {
 
   const logout = () => {
     dispatch(logoutThunk());
+    // I18nManager.forceRTL(true);
   };
 
   return (

@@ -16,5 +16,6 @@ export default {
     GET_ASSET_URL: '/assets/get',
     FIND_USER: '/user/findusers',
     CREATE_CHAT: '/chat/createchat',
+    USER_CHATS: '/chat/alluserchats',
   },
 };

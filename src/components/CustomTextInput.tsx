@@ -35,7 +35,7 @@ type CustomTextInputProps = {
   error?: string;
   textAreaInput?: boolean;
   onBlur?: () => void;
-  keyboardType?: string;
+  keyboardType?: TextInputProps['keyboardType'];
   autoCapitalize?: TextInputProps['autoCapitalize'];
 };
 
@@ -70,7 +70,7 @@ const CustomTextInput = ({
   return (
     <View>
       {label ? (
-        <Text numberOfLines={1} mb="s" variant="title">
+        <Text textAlign={'left'} numberOfLines={1} mb="s" variant="title">
           {label}
           <Text style={{color: colors.error}}>{star ? '*' : ''}</Text>
         </Text>

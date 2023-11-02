@@ -1,9 +1,15 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import apiCall from '../../services/apiCall';
+import api from '../../constants/api';
+import toast from '../../utils/toast';
+import {ChatItem} from '../../types/chat';
 
 // Files
 
-const initialState = {
-  loading: false,
+const initialState: {
+  userChats: ChatItem[] | [];
+} = {
+  userChats: [],
 };
 
 const chatSlice = createSlice({
@@ -11,12 +17,30 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     resetChatSlice: () => initialState,
-    setLoading(state, action) {
-      state.loading = action.payload;
+    setUserChats(state, action) {
+      state.userChats = action.payload;
     },
   },
 });
 
-export const {setLoading, resetChatSlice} = chatSlice.actions;
+export const getUserChatsThunk = createAsyncThunk(
+  'chat/getUserChatsThunk',
+  async (data = null, {dispatch}) => {
+    return new Promise(async (resolve, reject) => {
+      let res = await apiCall({
+        type: api.apiTypes.get,
+        url: api.endpoints.USER_CHATS,
+      });
+      if (res?.status) {
+        resolve(res);
+      } else {
+        toast.showErrorMessage(res?.message);
+        reject(res?.message);
+      }
+    });
+  },
+);
+
+export const {setUserChats, resetChatSlice} = chatSlice.actions;
 
 export default chatSlice.reducer;

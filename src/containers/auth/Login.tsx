@@ -74,7 +74,6 @@ const Login = () => {
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
       <CustomHeader title={t('appNamespace.login')} />
-
       <KeyboardAwareScrollView
         bounces={false}
         keyboardShouldPersistTaps="handled"
