@@ -20,3 +20,8 @@ export type SearchedUser = {
   updatedAt: string;
   pic: string | null;
 };
+
+export type PageProps = {
+  limit: number;
+  page: number;
+};

@@ -85,7 +85,6 @@ const SearchUsers = () => {
   );
 
   const onEndReached = useCallback(() => {
-    console.log('onEndReached');
     if (
       userInputRef.current &&
       totalPagesRef.current > currentPageRef.current

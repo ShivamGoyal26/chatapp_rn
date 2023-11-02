@@ -1,14 +1,16 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {useTheme} from '@shopify/restyle';
+import {useTranslation} from 'react-i18next';
+
+// Files
 import {Profile, SearchUsers} from '../containers';
 import {Images, Routes} from '../constants';
 import Chats from '../containers/chat/Chats';
 import {Text} from '../components';
-import {useTheme} from '@shopify/restyle';
 import {Theme} from '../theme';
 import {getScreenHeight} from '../utils/commonServices';
-import {useTranslation} from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 

@@ -1,15 +1,27 @@
 import React, {memo} from 'react';
 import dayjs from 'dayjs';
+var relativeTime = require('dayjs/plugin/relativeTime');
+dayjs.extend(relativeTime);
 import {useTranslation} from 'react-i18next';
 
 // Files
 import Box from '../Box';
 import Text from '../Text';
-import {SearchedUser} from '../../types/common';
 import {getScreenHeight} from '../../utils/commonServices';
+import {ChatItem as ChatItemProps} from '../../types/chat';
 
-const ChatItem = ({name, createdAt}: SearchedUser) => {
+const ChatItem = ({
+  createdAt,
+  _id,
+  chatName,
+  groupAdmin,
+  isGroupChat,
+  updatedAt,
+  users,
+  userId,
+}: ChatItemProps & {userId: string | null | undefined}) => {
   const {t} = useTranslation();
+
   return (
     <Box flexDirection="row" alignItems="center" marginVertical="l">
       <Box
@@ -20,14 +32,18 @@ const ChatItem = ({name, createdAt}: SearchedUser) => {
         justifyContent="center"
         borderColor="borderColor"
         borderWidth={getScreenHeight(0.1)}>
-        <Text variant="heading">{'name'}</Text>
+        <Text variant="heading">{'NA'}</Text>
       </Box>
       <Box marginLeft="m" flex={1}>
         <Text numberOfLines={1} variant="title">
-          {'name'}
+          {isGroupChat
+            ? chatName
+            : users[0].id === userId
+            ? users[1].name
+            : users[0].name}
         </Text>
         <Text numberOfLines={1} variant="subtitle">
-          {t('appNamespace.joinedAt')}: {dayjs(createdAt).format('DD-MMM-YYYY')}
+          {dayjs(updatedAt).fromNow()}
         </Text>
       </Box>
     </Box>

@@ -100,7 +100,7 @@ export const registerThunk = createAsyncThunk(
 
 export const findUsersThunk = createAsyncThunk(
   'auth/findUsersThunk',
-  async (data: SearchUsersRequestData, {dispatch}) => {
+  async (data: SearchUsersRequestData) => {
     return new Promise(async (resolve, reject) => {
       let res = await apiCall({
         type: api.apiTypes.get,

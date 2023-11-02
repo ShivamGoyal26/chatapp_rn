@@ -3,6 +3,7 @@ import apiCall from '../../services/apiCall';
 import api from '../../constants/api';
 import toast from '../../utils/toast';
 import {ChatItem} from '../../types/chat';
+import {PageProps} from '../../types/common';
 
 // Files
 
@@ -25,14 +26,15 @@ const chatSlice = createSlice({
 
 export const getUserChatsThunk = createAsyncThunk(
   'chat/getUserChatsThunk',
-  async (data = null, {dispatch}) => {
+  async (userChatParams: PageProps, {dispatch}) => {
     return new Promise(async (resolve, reject) => {
       let res = await apiCall({
         type: api.apiTypes.get,
         url: api.endpoints.USER_CHATS,
+        params: userChatParams,
       });
       if (res?.status) {
-        resolve(res);
+        resolve({data: res.data, pages: res.pages});
       } else {
         toast.showErrorMessage(res?.message);
         reject(res?.message);

@@ -32,6 +32,7 @@ import {
   CustomTextInput,
   Text,
 } from '../../components';
+import {useToggleRTL} from '../../hooks';
 
 const Login = () => {
   const theme = useTheme<Theme>();
