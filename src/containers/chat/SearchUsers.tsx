@@ -26,7 +26,7 @@ const SearchUsers = () => {
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
       <CustomHeader title={t('appNamespace.searchUsers')} />
-      <Box marginHorizontal={'m'}>
+      <Box marginHorizontal={'m'} flex={1}>
         <LoadUsers />
       </Box>
     </SafeAreaView>

@@ -43,6 +43,7 @@ export const uploadAssetsThunk = createAsyncThunk(
       if (res?.status && data.imageData?.uri) {
         const imageFormData = await fetch(data.imageData?.uri);
         const blob = await imageFormData.blob();
+        console.log('bolb', blob);
         fetch(res.url, {
           method: 'PUT',
           body: blob,

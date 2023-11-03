@@ -61,7 +61,16 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'chatapp_rn' do
+#target 'chatapp_rn' do
+abstract_target 'chatapp_rnCommonPods' do
+  target 'chatapp_rnDev' do
+   end
+
+   target 'chatapp_rnStg' do
+   end
+
+   target 'chatapp_rn' do
+   end
   config = use_native_modules!
 
   # Flags change depending on the env values.

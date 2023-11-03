@@ -18,17 +18,24 @@ const Stack = createNativeStackNavigator();
 const MainStack = () => {
   const internetRef = useRef<any>();
   const dispatch = useDispatch<AppDispatch>();
+  const internetFrequencyRef = useRef<any>();
 
   const internetManager = useCallback(async () => {
     internetRef.current = NetInfo.addEventListener((state: any) => {
       const offline = !(state.isConnected && state.isInternetReachable);
-      if (!offline) {
-        dispatch(setIsInternet(true));
-        // 'Internet Working'
-      } else {
-        dispatch(setIsInternet(false));
-        // 'Internet Not Working'
+
+      if (internetFrequencyRef?.current) {
+        clearTimeout(internetFrequencyRef.current);
       }
+      internetFrequencyRef.current = setTimeout(() => {
+        if (!offline) {
+          dispatch(setIsInternet(true));
+          // 'Internet Working'
+        } else {
+          dispatch(setIsInternet(false));
+          // 'Internet Not Working'
+        }
+      }, 200);
     });
   }, [dispatch]);
 

@@ -41,6 +41,7 @@ const Chats = () => {
   const [chats, setChats] = useState([]);
   const totalPagesRef = useRef<number>(1);
   const currentPageRef = useRef<number>(1);
+  const apiHitRateRef = useRef();
 
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -68,7 +69,14 @@ const Chats = () => {
         totalPagesRef.current = 1;
         getUserChats();
       }
-    }, [getUserChats, isInternet]),
+
+      return () => {
+        if (apiHitRateRef?.current) {
+          clearTimeout(apiHitRateRef?.current);
+        }
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isInternet]),
   );
 
   useEffect(() => {
@@ -79,7 +87,6 @@ const Chats = () => {
   }, [colors?.mainBackground]);
 
   const onEndReached = useCallback(() => {
-    console.log('onEndReached');
     if (totalPagesRef.current > currentPageRef.current) {
       currentPageRef.current = currentPageRef.current + 1;
       getUserChats();
