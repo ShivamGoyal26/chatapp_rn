@@ -37,6 +37,7 @@ type CustomTextInputProps = {
   onBlur?: () => void;
   keyboardType?: TextInputProps['keyboardType'];
   autoCapitalize?: TextInputProps['autoCapitalize'];
+  props?: any;
 };
 
 const CustomTextInput = ({
@@ -114,7 +115,7 @@ const CustomTextInput = ({
             ref={inputRef}
             onSubmitEditing={onSubmit}
             returnKeyType={type ? type : 'done'}
-            style={{...styles.textInput}}
+            style={styles.textInput}
             secureTextEntry={secure}
             value={value}
             onChangeText={onChangeText}

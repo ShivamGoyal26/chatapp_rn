@@ -11,10 +11,7 @@ import {getScreenHeight} from '../../utils/commonServices';
 import {ChatItem as ChatItemProps} from '../../types/chat';
 
 const ChatItem = ({
-  createdAt,
-  _id,
   chatName,
-  groupAdmin,
   isGroupChat,
   updatedAt,
   users,
@@ -42,9 +39,11 @@ const ChatItem = ({
             ? users[1].name
             : users[0].name}
         </Text>
-        <Text numberOfLines={1} variant="subtitle">
-          {users.length} {t('appNamespace.members')}
-        </Text>
+        {isGroupChat ? (
+          <Text numberOfLines={1} variant="subtitle">
+            {users.length} {t('appNamespace.members')}
+          </Text>
+        ) : null}
         <Text numberOfLines={1} variant="subtitle">
           {dayjs(updatedAt).fromNow()}
         </Text>

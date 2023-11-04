@@ -5,6 +5,7 @@ import {
   Platform,
   StatusBar,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
@@ -114,6 +115,10 @@ const Chats = () => {
     ) : null;
   }, [loading, t]);
 
+  const onChatItemClick = useCallback((data: ChatItemProps) => {
+    navigate(Routes.CHAT, {data: data});
+  }, []);
+
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
       <CustomHeader
@@ -131,7 +136,9 @@ const Chats = () => {
           data={chats}
           keyExtractor={chat => `${chat._id}`}
           renderItem={({item}: {item: ChatItemProps}) => (
-            <ChatItem {...item} userId={userData?.id} />
+            <TouchableOpacity onPress={() => onChatItemClick(item)}>
+              <ChatItem {...item} userId={userData?.id} />
+            </TouchableOpacity>
           )}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.1}

@@ -9,6 +9,7 @@ const routes = {
   HOME_STACK: 'HomeStack',
   AUTH_LOADING: 'AuthLoading',
   CREATE_GROUP: 'CreateGroup',
+  CHAT: 'Chat',
 };
 
 export default routes;
