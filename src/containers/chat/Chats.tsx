@@ -55,10 +55,10 @@ const Chats = () => {
       page: currentPageRef.current,
     };
     let res: any = await dispatch(getUserChatsThunk(userChatParams));
+    setLoading(false);
     if (res.meta.requestStatus === 'fulfilled') {
       setChats(pre => pre.concat(res.payload.data));
       totalPagesRef.current = res.payload.pages;
-      setLoading(false);
     }
   }, [dispatch]);
 

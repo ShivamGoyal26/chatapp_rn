@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
   FlatList,
+  KeyboardAvoidingView,
   Platform,
   StatusBar,
   StyleSheet,
@@ -63,28 +64,32 @@ const Chat = ({route}: any) => {
         leftIcon={Images.back}
       />
 
-      <Box margin="s" flex={1} backgroundColor="mainBackground">
-        <FlatList
-          data={[]}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={() => <View />}
-        />
-        <Box margin={'l'} flexDirection={'row'} alignItems={'center'}>
-          <Box maxHeight={getScreenHeight(10)} marginRight={'m'} flex={1}>
-            <TextInput
-              style={styles.textInput}
-              placeholder={t('appNamespace.typeMessage')}
-              onChangeText={setMessage}
-              value={message}
-              numberOfLines={4}
-              multiline={true}
-            />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Adjust behavior as needed
+        style={{flex: 1}}>
+        <Box margin="s" flex={1} backgroundColor="mainBackground">
+          <FlatList
+            data={[]}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={() => <View />}
+          />
+          <Box margin={'l'} flexDirection={'row'} alignItems={'center'}>
+            <Box maxHeight={getScreenHeight(10)} marginRight={'m'} flex={1}>
+              <TextInput
+                style={styles.textInput}
+                placeholder={t('appNamespace.typeMessage')}
+                onChangeText={setMessage}
+                value={message}
+                numberOfLines={4}
+                multiline={true}
+              />
+            </Box>
+            <TouchableOpacity>
+              <FastImage source={Images.send} style={styles.icon} />
+            </TouchableOpacity>
           </Box>
-          <TouchableOpacity>
-            <FastImage source={Images.send} style={styles.icon} />
-          </TouchableOpacity>
         </Box>
-      </Box>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
