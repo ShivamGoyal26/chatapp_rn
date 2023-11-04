@@ -9,4 +9,6 @@ export default {
   plus: require('../assets/images/plus.png'),
   check: require('../assets/images/check.png'),
   remove: require('../assets/images/remove.png'),
+  send: require('../assets/images/send.png'),
+  info: require('../assets/images/info.png'),
 };

@@ -33,7 +33,8 @@
     "weAreOnline": "we are online",
     "noInternet": "oops! no internet connection",
     "createGroup": "Create Group",
-    "members": "members"
+    "members": "members",
+    "typeMessage": "type your message..."
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",

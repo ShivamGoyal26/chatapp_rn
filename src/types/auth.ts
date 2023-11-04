@@ -21,6 +21,14 @@ export type UserData = {
   id: string;
 };
 
+export type UserDataFromServer = {
+  name: string;
+  email: string;
+  pic: string;
+  token: string;
+  _id: string;
+};
+
 export type SelectUserData = SearchedUser & {
   isSelected: boolean;
 };

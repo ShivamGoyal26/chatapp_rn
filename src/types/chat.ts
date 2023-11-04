@@ -1,11 +1,11 @@
-import {UserData} from './auth';
+import {UserData, UserDataFromServer} from './auth';
 
 export type ChatItem = {
   _id: string;
   chatName: string;
   createdAt: string;
   groupAdmin: UserData[];
-  users: UserData[];
+  users: UserDataFromServer[];
   updatedAt: string;
   isGroupChat: boolean;
 };
