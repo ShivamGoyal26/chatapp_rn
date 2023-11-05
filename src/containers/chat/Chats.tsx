@@ -18,7 +18,7 @@ import {ColorTheme, Theme} from '../../theme';
 import {Box, ChatItem, CustomHeader, Text} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../redux/store';
-import {getUserChatsThunk} from '../../redux/chat';
+import {getUserChatsThunk, setChatInfo} from '../../redux/chat';
 import {ChatItem as ChatItemProps} from '../../types/chat';
 import images from '../../constants/images';
 import {navigate} from '../../utils/routerServices';
@@ -115,9 +115,13 @@ const Chats = () => {
     ) : null;
   }, [loading, t]);
 
-  const onChatItemClick = useCallback((data: ChatItemProps) => {
-    navigate(Routes.CHAT, {data: data});
-  }, []);
+  const onChatItemClick = useCallback(
+    (data: ChatItemProps) => {
+      dispatch(setChatInfo(data));
+      navigate(Routes.CHAT_STACK, {});
+    },
+    [dispatch],
+  );
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>

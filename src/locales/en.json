@@ -34,7 +34,11 @@
     "noInternet": "oops! no internet connection",
     "createGroup": "Create Group",
     "members": "members",
-    "typeMessage": "type your message..."
+    "typeMessage": "type your message...",
+    "remove": "remove",
+    "deleteGroup": "delete group",
+    "addMember": "add member",
+    "add": "add"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",
@@ -48,6 +52,8 @@
     "cameraNotAvailable": "camera not available on this device",
     "corruptedImage": "image is corrupted, please pick other",
     "groupName": "please enter the group name",
-    "leastGroupMembers": "please add atleast 2 members in group"
+    "leastGroupMembers": "please add atleast 2 members in group",
+    "enterChatId": "please enter the chatID",
+    "enterUserId": "please enter the userID"
   }
 }

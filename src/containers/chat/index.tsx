@@ -13,6 +13,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@shopify/restyle';
 import FastImage from 'react-native-fast-image';
+import {useSelector} from 'react-redux';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
@@ -21,29 +22,32 @@ import {Box, CustomHeader} from '../../components';
 import images from '../../constants/images';
 import {goBack, navigate} from '../../utils/routerServices';
 import {Images, Routes} from '../../constants';
-import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/store';
-import {ChatItem} from '../../types/chat';
 import fonts from '../../constants/fonts';
 
-const Chat = ({route}: any) => {
-  const data: ChatItem = route.params.data;
+const Chat = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
+  const chatInfo = useSelector((state: RootState) => state.chat.chatInfo);
 
   const userData = useSelector((state: RootState) => state.auth.userData);
   const [message, setMessage] = useState('');
 
   const headerName = useMemo(() => {
-    if (data.isGroupChat) {
-      return data.chatName;
+    if (chatInfo?.isGroupChat) {
+      return chatInfo?.chatName;
     }
-    if (userData?.id === data.users[0]._id) {
-      return data.users[1].name;
+    if (userData?.id === chatInfo?.users[0]._id) {
+      return chatInfo?.users[1].name;
     }
-    return data.users[0].name;
-  }, [data.chatName, data.isGroupChat, data.users, userData?.id]);
+    return chatInfo?.users[0].name;
+  }, [
+    chatInfo?.chatName,
+    chatInfo?.isGroupChat,
+    chatInfo?.users,
+    userData?.id,
+  ]);
 
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -57,8 +61,8 @@ const Chat = ({route}: any) => {
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
       <CustomHeader
-        rightAction={() => navigate(Routes.CREATE_GROUP, {})}
-        rightIcon={data.isGroupChat ? images.info : null}
+        rightAction={() => navigate(Routes.GROUP_INFO, {})}
+        rightIcon={chatInfo?.isGroupChat ? images.info : null}
         title={headerName}
         leftAction={goBack}
         leftIcon={Images.back}

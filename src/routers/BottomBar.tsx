@@ -104,7 +104,7 @@ const BottomBar = () => {
           // marginBottom: 10,
         },
       }}
-      initialRouteName="Home">
+      initialRouteName={Routes.CHATS}>
       {screens.map((item, key) => {
         return (
           <Tab.Screen

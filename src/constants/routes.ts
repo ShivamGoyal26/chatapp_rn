@@ -10,6 +10,10 @@ const routes = {
   AUTH_LOADING: 'AuthLoading',
   CREATE_GROUP: 'CreateGroup',
   CHAT: 'Chat',
+  GROUP_INFO: 'GroupInfo',
+  ADD_USER_TO_GROUP: 'AddUserToGroup',
+  GROUP_STACK: 'GroupStack',
+  CHAT_STACK: 'ChatStack',
 };
 
 export default routes;

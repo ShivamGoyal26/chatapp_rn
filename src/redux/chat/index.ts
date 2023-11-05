@@ -2,7 +2,12 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import apiCall from '../../services/apiCall';
 import api from '../../constants/api';
 import toast from '../../utils/toast';
-import {ChatItem, CreateGroupBody} from '../../types/chat';
+import {
+  AddUsersGroupAPIBodyData,
+  ChatItem,
+  CreateGroupBody,
+  RemoveUserFromGroupAPIBodyData,
+} from '../../types/chat';
 import {PageProps} from '../../types/common';
 import {t} from 'i18next';
 import {goBack} from '../../utils/routerServices';
@@ -11,8 +16,10 @@ import {goBack} from '../../utils/routerServices';
 
 const initialState: {
   userChats: ChatItem[] | [];
+  chatInfo: ChatItem | null;
 } = {
   userChats: [],
+  chatInfo: null,
 };
 
 const chatSlice = createSlice({
@@ -22,6 +29,9 @@ const chatSlice = createSlice({
     resetChatSlice: () => initialState,
     setUserChats(state, action) {
       state.userChats = action.payload;
+    },
+    setChatInfo(state, action) {
+      state.chatInfo = action.payload;
     },
   },
 });
@@ -73,6 +83,61 @@ export const createGroupThunk = createAsyncThunk(
   },
 );
 
-export const {setUserChats, resetChatSlice} = chatSlice.actions;
+export const removeUserFromGroupThunk = createAsyncThunk(
+  'chat/removeUserFromGroupThunk',
+  async (data: RemoveUserFromGroupAPIBodyData) => {
+    if (!data?.chatId) {
+      return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
+    }
+    if (!data.userId) {
+      return toast.showErrorMessage(t('messagesNamespace.enterUserId'));
+    }
+    return new Promise(async (resolve, reject) => {
+      let res = await apiCall({
+        type: api.apiTypes.put,
+        url: api.endpoints.REMOVE_USER,
+        data: data,
+        enableLoader: false,
+      });
+      if (res?.status) {
+        console.log('This is the res', res);
+        toast.showSuccessMessage(res.message);
+        resolve({data: res.data});
+      } else {
+        toast.showErrorMessage(res?.message);
+        reject(res?.message);
+      }
+    });
+  },
+);
+
+export const addUserFromGroupThunk = createAsyncThunk(
+  'chat/addUserFromGroupThunk',
+  async (data: AddUsersGroupAPIBodyData) => {
+    if (!data?.chatId) {
+      return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
+    }
+    if (!data.userIds?.length) {
+      return toast.showErrorMessage(t('messagesNamespace.enterUserId'));
+    }
+    return new Promise(async (resolve, reject) => {
+      let res = await apiCall({
+        type: api.apiTypes.put,
+        url: api.endpoints.ADD_USER,
+        data: data,
+        enableLoader: false,
+      });
+      if (res?.status) {
+        toast.showSuccessMessage(res.message);
+        resolve({data: res.data});
+      } else {
+        toast.showErrorMessage(res?.message);
+        reject(res?.message);
+      }
+    });
+  },
+);
+
+export const {setUserChats, resetChatSlice, setChatInfo} = chatSlice.actions;
 
 export default chatSlice.reducer;

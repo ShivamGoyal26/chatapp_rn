@@ -22,13 +22,17 @@ const SelectUserItem = ({
   _id,
   index,
   isSelected,
+  isDisabled,
 }: SelectUserItemProps & {index: number}) => {
   const {t} = useTranslation();
 
   console.log('SelectUserItemProps');
 
   return (
-    <TouchableOpacity onPress={() => onPress(index)}>
+    <TouchableOpacity
+      disabled={isDisabled}
+      style={{opacity: isDisabled ? 0.5 : 1}}
+      onPress={() => onPress(index)}>
       <Box
         flexDirection="row"
         justifyContent={'space-between'}
