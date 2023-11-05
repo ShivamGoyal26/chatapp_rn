@@ -2,7 +2,11 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import apiCall from '../../services/apiCall';
 import api from '../../constants/api';
 import toast from '../../utils/toast';
-import {ChatItem, CreateGroupBody} from '../../types/chat';
+import {
+  ChatItem,
+  CreateGroupBody,
+  DeleteGroupAPIBodyData,
+} from '../../types/chat';
 import {PageProps} from '../../types/common';
 import {t} from 'i18next';
 import {goBack} from '../../utils/routerServices';
@@ -65,6 +69,34 @@ export const createGroupThunk = createAsyncThunk(
         goBack();
         toast.showSuccessMessage(res.message);
         // resolve({data: res.data, pages: res.pages});
+      } else {
+        toast.showErrorMessage(res?.message);
+        reject(res?.message);
+      }
+    });
+  },
+);
+
+export const removeUserFromGroupThunk = createAsyncThunk(
+  'chat/removeUserFromGroupThunk',
+  async (data: DeleteGroupAPIBodyData) => {
+    if (!data?.chatId) {
+      return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
+    }
+    if (!data.userId) {
+      return toast.showErrorMessage(t('messagesNamespace.enterUserId'));
+    }
+    return new Promise(async (resolve, reject) => {
+      let res = await apiCall({
+        type: api.apiTypes.put,
+        url: api.endpoints.REMOVE_USER,
+        data: data,
+        enableLoader: false,
+      });
+      if (res?.status) {
+        console.log('This is the res', res);
+        toast.showSuccessMessage(res.message);
+        resolve({data: res.data});
       } else {
         toast.showErrorMessage(res?.message);
         reject(res?.message);

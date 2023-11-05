@@ -161,6 +161,7 @@ const apiCall = async ({
       }
     }
   } catch (error: any) {
+    console.log(error);
     return {
       status: false,
       message: error?.message,
