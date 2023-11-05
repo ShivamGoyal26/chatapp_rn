@@ -1,4 +1,4 @@
-import {UserData, UserDataFromServer} from './auth';
+import {UserDataFromServer} from './auth';
 
 export type ChatItem = {
   _id: string;
@@ -15,7 +15,12 @@ export type CreateGroupBody = {
   name: string;
 };
 
-export type DeleteGroupAPIBodyData = {
-  chatId: string;
-  userId: string;
+export type RemoveUserFromGroupAPIBodyData = {
+  chatId: string | null | undefined;
+  userId: string | null | undefined;
+};
+
+export type AddUsersGroupAPIBodyData = {
+  chatId: string | null | undefined;
+  userIds: string | null | undefined;
 };

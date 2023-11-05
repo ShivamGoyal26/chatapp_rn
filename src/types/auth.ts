@@ -31,4 +31,5 @@ export type UserDataFromServer = {
 
 export type SelectUserData = SearchedUser & {
   isSelected: boolean;
+  isDisabled: boolean;
 };

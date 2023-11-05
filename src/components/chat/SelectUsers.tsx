@@ -24,7 +24,7 @@ import {Theme} from '../../theme';
 import {Box, SelectUserItem, Text, UserSearch} from '../../components';
 import {findUsersThunk} from '../../redux/auth';
 import {SearchUsersRequestData} from '../../types/common';
-import {SelectUserData} from '../../types/auth';
+import {SelectUserData, UserDataFromServer} from '../../types/auth';
 import FastImage from 'react-native-fast-image';
 import {Images} from '../../constants';
 
@@ -40,6 +40,10 @@ type selectedUsersData = {
   [key: string]: SelectUserData;
 };
 
+type DisabledUsersData = {
+  [key: string]: UserDataFromServer;
+};
+
 const SelectUsers = forwardRef((_, ref) => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
@@ -52,10 +56,18 @@ const SelectUsers = forwardRef((_, ref) => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<SelectUserData[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<selectedUsersData>({});
+  const [disabledUsers, setDisabledUsers] = useState<DisabledUsersData>({});
 
   useImperativeHandle(ref, () => ({
     getSelectedItem() {
       return users.filter(item => item.isSelected);
+    },
+    setDisableItems(items: UserDataFromServer[]) {
+      let disableUsersObject: DisabledUsersData = {};
+      items.forEach((user: UserDataFromServer) => {
+        disableUsersObject[user._id] = user;
+      });
+      setDisabledUsers(disableUsersObject);
     },
   }));
 
@@ -114,6 +126,7 @@ const SelectUsers = forwardRef((_, ref) => {
       if (res.meta.requestStatus === 'fulfilled') {
         let mainData = res.payload.data?.map((item: SelectUserData) => {
           item.isSelected = !!selectedUsers[item._id];
+          item.isDisabled = !!disabledUsers[item._id];
           return item;
         });
 
@@ -122,7 +135,7 @@ const SelectUsers = forwardRef((_, ref) => {
         setLoading(false);
       }
     },
-    [dispatch, selectedUsers],
+    [dispatch, selectedUsers, disabledUsers],
   );
 
   const keywordHandler = useCallback(

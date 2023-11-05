@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
-  I18nManager,
   Platform,
   ScrollView,
   StatusBar,

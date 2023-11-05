@@ -35,7 +35,10 @@
     "createGroup": "Create Group",
     "members": "members",
     "typeMessage": "type your message...",
-    "remove": "remove"
+    "remove": "remove",
+    "deleteGroup": "delete group",
+    "addMember": "add member",
+    "add": "add"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",

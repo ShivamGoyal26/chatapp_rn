@@ -1,27 +1,26 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@shopify/restyle';
 import {produce} from 'immer';
+import {useDispatch, useSelector} from 'react-redux';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
 import {ColorTheme, Theme} from '../../theme';
 import {Box, CustomHeader, Text} from '../../components';
-import {ChatItem as ChatItemProps} from '../../types/chat';
-import images from '../../constants/images';
-import {navigate} from '../../utils/routerServices';
-import {Routes} from '../../constants';
+import {goBack, navigate} from '../../utils/routerServices';
+import {Images, Routes} from '../../constants';
 import {UserDataFromServer} from '../../types/auth';
 import Spinner from '../../utils/spinnerRef';
-import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../redux/store';
-import {removeUserFromGroupThunk} from '../../redux/chat';
+import {removeUserFromGroupThunk, setChatInfo} from '../../redux/chat';
 
 type RenderItemProps = UserDataFromServer & {
   onUserDeletePress: (userId: string) => void;
   isAdmin: boolean;
+  isDeleteable: boolean;
 };
 
 const RenderItem = ({
@@ -29,6 +28,7 @@ const RenderItem = ({
   onUserDeletePress,
   _id,
   isAdmin,
+  isDeleteable,
 }: RenderItemProps) => {
   const {t} = useTranslation();
   return (
@@ -52,7 +52,7 @@ const RenderItem = ({
         <Text numberOfLines={1} variant={'title'}>
           {name}
         </Text>
-        {isAdmin ? (
+        {isAdmin && isDeleteable ? (
           <TouchableOpacity
             onPress={() => onUserDeletePress(_id)}
             style={{alignSelf: 'flex-start'}}>
@@ -64,82 +64,91 @@ const RenderItem = ({
   );
 };
 
-const GroupInfo = ({route}: any) => {
-  const itemData: ChatItemProps = route.params.data;
+const GroupInfo = () => {
+  const chatInfo = useSelector((state: RootState) => state.chat.chatInfo);
 
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const dispatch = useDispatch<AppDispatch>();
+  const {t} = useTranslation();
 
   const styles = useMemo(() => createStyles(colors), [colors]);
   const userData = useSelector((state: RootState) => state.auth.userData);
-  const [data, setData] = useState(itemData);
 
-  const setGroupData = useCallback(
-    (chatInfo: ChatItemProps) => {
-      if (chatInfo) {
-        const idToRemove = userData?.id;
-        const updateditemData = produce(chatInfo, draft => {
-          draft.users = draft.users.filter(user => user._id !== idToRemove);
-        });
-        setData(updateditemData);
-      }
-    },
-    [userData?.id],
-  );
-
-  useEffect(() => {
-    if (itemData) {
-      setGroupData(itemData);
+  const data = useMemo(() => {
+    if (chatInfo) {
+      const idToRemove = userData?.id;
+      const updateditemData = produce(chatInfo, draft => {
+        draft.users = draft.users.filter(user => user._id !== idToRemove);
+      });
+      return updateditemData;
     }
-  }, [itemData, setGroupData]);
+  }, [chatInfo, userData?.id]);
 
   const isAdmin = useMemo(() => {
-    const res = itemData.groupAdmin.find(
+    const res = chatInfo?.groupAdmin.find(
       (item: UserDataFromServer) => item._id === userData?.id,
     );
     if (res) {
       return true;
     }
     return false;
-  }, [itemData.groupAdmin, userData?.id]);
+  }, [chatInfo?.groupAdmin, userData?.id]);
+
+  const isDeleteable = useMemo(() => {
+    let userLength = data?.users.length;
+    if (userLength === 2) {
+      return false;
+    }
+    return true;
+  }, [data?.users.length]);
 
   const onUserDeletePress = useCallback(
     async (userId: string) => {
       const mainData = {
         userId: userId,
-        chatId: data._id,
+        chatId: chatInfo?._id,
       };
       Spinner.show();
       const res: any = await dispatch(removeUserFromGroupThunk(mainData));
       Spinner.hide();
       if (res.meta.requestStatus === 'fulfilled') {
-        setGroupData(res.payload.data);
+        dispatch(setChatInfo(res.payload.data));
       }
     },
-    [data._id, dispatch, setGroupData],
+    [chatInfo?._id, dispatch],
   );
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
       <CustomHeader
-        rightAction={() => navigate(Routes.CREATE_GROUP, {})}
-        rightIcon={images.plus}
-        title={data.chatName}
+        leftIcon={Images.back}
+        leftAction={goBack}
+        rightAction={() => navigate(Routes.ADD_USER_TO_GROUP, {})}
+        rightIcon={Images.plus}
+        title={chatInfo?.chatName}
       />
 
       <Box margin="s" flex={1} backgroundColor="mainBackground">
         <FlatList
-          data={data.users}
+          data={data?.users}
           keyExtractor={item => item._id}
           renderItem={({item}) => (
             <RenderItem
+              isDeleteable={isDeleteable}
               {...item}
               isAdmin={isAdmin}
               onUserDeletePress={onUserDeletePress}
             />
           )}
         />
+        {isAdmin ? (
+          <TouchableOpacity style={{alignSelf: 'center'}}>
+            <Text marginBottom={'m'} variant={'title'} color={'error'}>
+              {t('appNamespace.deleteGroup')}
+            </Text>
+          </TouchableOpacity>
+        ) : null}
       </Box>
     </SafeAreaView>
   );
