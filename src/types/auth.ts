@@ -23,10 +23,10 @@ export type UserData = {
 
 export type UserDataFromServer = {
   name: string;
-  email: string;
   pic: string;
-  token: string;
   _id: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type SelectUserData = SearchedUser & {

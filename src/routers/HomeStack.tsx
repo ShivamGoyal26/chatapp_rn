@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Routes} from '../constants';
 import BottomBar from './BottomBar';
 import {Chat, CreateGroup} from '../containers';
+import GroupInfo from '../containers/chat/GroupInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ const HomeStack = () => {
       <Stack.Screen name={Routes.BOTTOM_BAR} component={BottomBar} />
       <Stack.Screen name={Routes.CREATE_GROUP} component={CreateGroup} />
       <Stack.Screen name={Routes.CHAT} component={Chat} />
+      <Stack.Screen name={Routes.GROUP_INFO} component={GroupInfo} />
     </Stack.Navigator>
   );
 };

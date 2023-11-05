@@ -57,7 +57,7 @@ const Chat = ({route}: any) => {
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
       <CustomHeader
-        rightAction={() => navigate(Routes.CREATE_GROUP, {})}
+        rightAction={() => navigate(Routes.GROUP_INFO, {data: data})}
         rightIcon={data.isGroupChat ? images.info : null}
         title={headerName}
         leftAction={goBack}
