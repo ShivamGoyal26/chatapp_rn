@@ -125,6 +125,7 @@ const Chats = () => {
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
+      <Text>This is test</Text>
       <CustomHeader
         rightAction={() => navigate(Routes.CREATE_GROUP, {})}
         rightIcon={images.plus}
