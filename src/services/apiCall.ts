@@ -7,6 +7,7 @@ import {store} from '../redux/store';
 import api from '../constants/api';
 import {isTokenExpired} from '../utils/tokens';
 import {logoutThunk} from '../redux/auth';
+import {Alert} from 'react-native';
 
 type apiCallProps = {
   hasImage?: 0 | 1;
@@ -31,6 +32,7 @@ const getInstance = ({
   const authToken = store.getState().auth.authToken;
   const instance = axios.create({
     baseURL: Config.API_URL,
+    timeout: 5000,
   });
 
   instance.interceptors.request.use(
@@ -161,7 +163,7 @@ const apiCall = async ({
       }
     }
   } catch (error: any) {
-    console.log(error);
+    console.log('?????', error);
     return {
       status: false,
       message: error?.message,

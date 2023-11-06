@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
@@ -124,7 +124,7 @@ const GroupInfo = () => {
       <CustomHeader
         leftIcon={Images.back}
         leftAction={goBack}
-        rightAction={() => navigate(Routes.ADD_USER_TO_GROUP, {})}
+        rightAction={() => navigate(Routes.ADD_USERS_TO_GROUP, {})}
         rightIcon={Images.plus}
         title={chatInfo?.chatName}
       />

@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // Files
 import {Routes} from '../constants';
-import {AddUserToGroup, Chat, GroupInfo} from '../containers';
+import {AddUsersToGroup, Chat, GroupInfo} from '../containers';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,8 +15,8 @@ const ChatStack = () => {
       <Stack.Screen name={Routes.CHAT} component={Chat} />
       <Stack.Screen name={Routes.GROUP_INFO} component={GroupInfo} />
       <Stack.Screen
-        name={Routes.ADD_USER_TO_GROUP}
-        component={AddUserToGroup}
+        name={Routes.ADD_USERS_TO_GROUP}
+        component={AddUsersToGroup}
       />
     </Stack.Navigator>
   );

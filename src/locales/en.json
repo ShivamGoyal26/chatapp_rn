@@ -37,7 +37,7 @@
     "typeMessage": "type your message...",
     "remove": "remove",
     "deleteGroup": "delete group",
-    "addMember": "add member",
+    "addMembers": "add members",
     "add": "add"
   },
   "messagesNamespace": {
