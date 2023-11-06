@@ -19,6 +19,6 @@ export default {
     USER_CHATS: '/chat/alluserchats',
     CREATE_GROUP: '/chat/creategroup',
     REMOVE_USER: 'chat/removeuserfromgroup',
-    ADD_USER: 'chat/addusertogroup',
+    ADD_USER: 'chat/adduserstogroup',
   },
 };

@@ -5,5 +5,5 @@ export {default as Profile} from './profile/Profile';
 export {default as AuthLoading} from './authLoading';
 export {default as CreateGroup} from './chat/CreateGroup';
 export {default as Chat} from './chat/index';
-export {default as AddUserToGroup} from './chat/AddUserToGroup';
+export {default as AddUsersToGroup} from './chat/AddUsersToGroup';
 export {default as GroupInfo} from './chat/GroupInfo';

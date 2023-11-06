@@ -16,7 +16,7 @@ import {SelectUserData} from '../../types/auth';
 import {addUserFromGroupThunk, setChatInfo} from '../../redux/chat';
 import Spinner from '../../utils/spinnerRef';
 
-const AddUserToGroup = () => {
+const AddUsersToGroup = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const dispatch = useDispatch<AppDispatch>();
@@ -63,7 +63,7 @@ const AddUserToGroup = () => {
         leftIcon={Images.back}
         leftAction={goBack}
         leftIconColor={colors.mainForeground}
-        title={t('appNamespace.addMember')}
+        title={t('appNamespace.addMembers')}
       />
       <Box flex={1} marginHorizontal={'m'} backgroundColor={'mainBackground'}>
         <SelectUsers ref={selectedUsers} />
@@ -91,4 +91,4 @@ const createStyles = (theme: ColorTheme) => {
   });
 };
 
-export default AddUserToGroup;
+export default AddUsersToGroup;
