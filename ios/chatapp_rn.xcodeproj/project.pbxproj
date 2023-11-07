@@ -14,6 +14,9 @@
 		2C06381E60354C6D86EB22DA /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F13B37E04A464CBEEBD4E9 /* Poppins-SemiBold.ttf */; };
 		391F3ED1CB06C86E4FA62D5A /* libPods-chatapp_rnCommonPods-chatapp_rn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F0A878082778AC773EF469 /* libPods-chatapp_rnCommonPods-chatapp_rn.a */; };
 		3DCC30EA79FC4BC59DF415B7 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3EBA1F4B4A1F43A297D003A8 /* Poppins-Medium.ttf */; };
+		402D1CBE2AF9F00600BDC13A /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 402D1CBD2AF9F00600BDC13A /* AppCenter-Config.plist */; };
+		402D1CBF2AF9F00600BDC13A /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 402D1CBD2AF9F00600BDC13A /* AppCenter-Config.plist */; };
+		402D1CC02AF9F00600BDC13A /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 402D1CBD2AF9F00600BDC13A /* AppCenter-Config.plist */; };
 		40D0E4A52AF4CBF500D656AF /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		40D0E4A62AF4CBF500D656AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		40D0E4AA2AF4CBF500D656AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -66,6 +69,7 @@
 		30DC82C5E0F2E72D4E5AD2DB /* Pods-chatapp_rnCommonPods-chatapp_rnDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatapp_rnCommonPods-chatapp_rnDev.release.xcconfig"; path = "Target Support Files/Pods-chatapp_rnCommonPods-chatapp_rnDev/Pods-chatapp_rnCommonPods-chatapp_rnDev.release.xcconfig"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-chatapp_rn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chatapp_rn.debug.xcconfig"; path = "Target Support Files/Pods-chatapp_rn/Pods-chatapp_rn.debug.xcconfig"; sourceTree = "<group>"; };
 		3EBA1F4B4A1F43A297D003A8 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		402D1CBD2AF9F00600BDC13A /* AppCenter-Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppCenter-Config.plist"; sourceTree = "<group>"; };
 		40D0E4B72AF4CBF500D656AF /* chatapp_rnDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatapp_rnDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40D0E4B82AF4CBF500D656AF /* chatapp_rn dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "chatapp_rn dev-Info.plist"; path = "/Users/shivam/Documents/chatapp_rn/ios/chatapp_rn dev-Info.plist"; sourceTree = "<absolute>"; };
 		40D0E4CF2AF4CC1B00D656AF /* chatapp_rnStg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatapp_rnStg.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,6 +194,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				402D1CBD2AF9F00600BDC13A /* AppCenter-Config.plist */,
 				13B07FAE1A68108700A75B9A /* chatapp_rn */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* chatapp_rnTests */,
@@ -380,6 +385,7 @@
 				6C39C667E1884E97A983C4E5 /* Poppins-Bold.ttf in Resources */,
 				5320CB8E1DB6494FB2E6662A /* Poppins-Light.ttf in Resources */,
 				3DCC30EA79FC4BC59DF415B7 /* Poppins-Medium.ttf in Resources */,
+				402D1CBE2AF9F00600BDC13A /* AppCenter-Config.plist in Resources */,
 				F0B1AF839F2F45259D653BA5 /* Poppins-Regular.ttf in Resources */,
 				2C06381E60354C6D86EB22DA /* Poppins-SemiBold.ttf in Resources */,
 			);
@@ -394,6 +400,7 @@
 				40D0E4AC2AF4CBF500D656AF /* Poppins-Bold.ttf in Resources */,
 				40D0E4AD2AF4CBF500D656AF /* Poppins-Light.ttf in Resources */,
 				40D0E4AE2AF4CBF500D656AF /* Poppins-Medium.ttf in Resources */,
+				402D1CBF2AF9F00600BDC13A /* AppCenter-Config.plist in Resources */,
 				40D0E4AF2AF4CBF500D656AF /* Poppins-Regular.ttf in Resources */,
 				40D0E4B02AF4CBF500D656AF /* Poppins-SemiBold.ttf in Resources */,
 			);
@@ -408,6 +415,7 @@
 				40D0E4C42AF4CC1B00D656AF /* Poppins-Bold.ttf in Resources */,
 				40D0E4C52AF4CC1B00D656AF /* Poppins-Light.ttf in Resources */,
 				40D0E4C62AF4CC1B00D656AF /* Poppins-Medium.ttf in Resources */,
+				402D1CC02AF9F00600BDC13A /* AppCenter-Config.plist in Resources */,
 				40D0E4C72AF4CC1B00D656AF /* Poppins-Regular.ttf in Resources */,
 				40D0E4C82AF4CC1B00D656AF /* Poppins-SemiBold.ttf in Resources */,
 			);
