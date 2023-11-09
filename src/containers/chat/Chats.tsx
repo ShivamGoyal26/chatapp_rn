@@ -23,6 +23,7 @@ import {ChatItem as ChatItemProps} from '../../types/chat';
 import images from '../../constants/images';
 import {navigate} from '../../utils/routerServices';
 import {Routes} from '../../constants';
+import {generateTestCrash} from 'appcenter-crashes';
 
 const PER_CHAT_LIMIT = 10;
 
@@ -125,7 +126,13 @@ const Chats = () => {
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
-      <Text>This is test</Text>
+      <TouchableOpacity
+        onPress={() => {
+          // generateTestCrash();
+          throw new Error('this is test error');
+        }}>
+        <Text>Crash</Text>
+      </TouchableOpacity>
       <CustomHeader
         rightAction={() => navigate(Routes.CREATE_GROUP, {})}
         rightIcon={images.plus}
