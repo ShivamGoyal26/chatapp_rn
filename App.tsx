@@ -50,6 +50,7 @@ const App = () => {
 
   return (
     // <QueryClientProvider client={queryClient}>
+    <Text>this is the merge</Text>
     <ThemeProvider theme={colorScheme === 'light' ? theme : darkTheme}>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
