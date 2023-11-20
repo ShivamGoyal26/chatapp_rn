@@ -24,6 +24,7 @@ import {persistor, store} from './src/redux/store';
 import {darkTheme, theme} from './src/theme';
 import {Fonts} from './src/constants';
 import {getScreenHeight} from './src/utils/commonServices';
+import Demo from './Demo';
 
 // onlineManager.setEventListener(setOnline => {
 //   return NetInfo.addEventListener(state => {
@@ -56,7 +57,8 @@ const App = () => {
           <SafeAreaProvider>
             <NavigationContainer ref={NavigationRef}>
               <FlashMessage titleStyle={styles.title} position="top" />
-              <MainStack />
+              {/* <MainStack /> */}
+              <Demo />
             </NavigationContainer>
           </SafeAreaProvider>
         </PersistGate>
