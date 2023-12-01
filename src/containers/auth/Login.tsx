@@ -32,6 +32,8 @@ import {
   CustomTextInput,
   Text,
 } from '../../components';
+import {trackEvent} from 'appcenter-analytics';
+import {generateTestCrash} from 'appcenter-crashes';
 
 const Login = () => {
   const theme = useTheme<Theme>();
@@ -88,6 +90,7 @@ const Login = () => {
             autoPlay
             loop
           />
+
           <Box marginBottom="m">
             <Controller
               name="email"
@@ -119,7 +122,6 @@ const Login = () => {
               )}
             />
           </Box>
-
           <Box marginBottom="m">
             <Controller
               name="password"
@@ -153,7 +155,6 @@ const Login = () => {
               )}
             />
           </Box>
-
           <TouchableOpacity
             style={styles.account}
             onPress={() => navigate(Routes.SIGNUP, {})}>
@@ -161,9 +162,13 @@ const Login = () => {
               {t('appNamespace.noAccount')}
             </Text>
           </TouchableOpacity>
-
           <CustomButton
-            action={handleSubmit(onLoginPress)}
+            action={() => {
+              console.log('here');
+              // trackEvent('My custom event');
+              generateTestCrash();
+            }}
+            // action={handleSubmit(onLoginPress)}
             title={t('appNamespace.getIn')}
           />
         </Box>
