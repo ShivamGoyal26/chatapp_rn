@@ -126,13 +126,6 @@ const Chats = () => {
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
-      <TouchableOpacity
-        onPress={() => {
-          // generateTestCrash();
-          throw new Error('this is test error');
-        }}>
-        <Text>Crash</Text>
-      </TouchableOpacity>
       <CustomHeader
         rightAction={() => navigate(Routes.CREATE_GROUP, {})}
         rightIcon={images.plus}
