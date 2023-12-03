@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services'
 // add this block
 project.ext.envConfigFiles = [
    productiondebug: ".env.production",
@@ -87,7 +88,7 @@ android {
     productFlavors {
         production {
             minSdkVersion rootProject.ext.minSdkVersion
-            applicationId "com.chatapp_rn"
+            applicationId "com.chatty"
             targetSdkVersion rootProject.ext.targetSdkVersion
             resValue "string", "build_config_package", "com.chatapp_rn"
         }
@@ -99,7 +100,7 @@ android {
         }
         development {
             minSdkVersion rootProject.ext.minSdkVersion
-            applicationId "com.chatapp_rn.development"
+            applicationId "dev.chatty"
             targetSdkVersion rootProject.ext.targetSdkVersion
             resValue "string", "build_config_package", "com.chatapp_rn"
         }

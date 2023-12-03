@@ -29,6 +29,7 @@ const getInstance = ({
   cancelToken,
   replaceHeaders,
 }: any) => {
+  console.log(Config.API_URL);
   const authToken = store.getState().auth.authToken;
   const instance = axios.create({
     baseURL: Config.API_URL,

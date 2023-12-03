@@ -163,12 +163,7 @@ const Login = () => {
             </Text>
           </TouchableOpacity>
           <CustomButton
-            action={() => {
-              console.log('here');
-              // trackEvent('My custom event');
-              generateTestCrash();
-            }}
-            // action={handleSubmit(onLoginPress)}
+            action={handleSubmit(onLoginPress)}
             title={t('appNamespace.getIn')}
           />
         </Box>

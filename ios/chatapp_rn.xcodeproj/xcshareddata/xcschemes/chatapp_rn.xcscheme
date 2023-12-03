@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;echo &quot;.env.production&quot; &gt; /tmp/envfile&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;GOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist&#10;GOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/Firebase/Prod/${GOOGLESERVICE_INFO_PLIST}&#10;PLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app&#10;cp &quot;${GOOGLESERVICE_INFO_DEV}&quot; &quot;${PLIST_DESTINATION}&quot;&#10;echo &quot;.env.production&quot; &gt; /tmp/envfile&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"

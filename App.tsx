@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, useColorScheme} from 'react-native';
@@ -6,6 +6,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {ThemeProvider} from '@shopify/restyle';
 import FlashMessage from 'react-native-flash-message';
+import firestore from '@react-native-firebase/firestore';
 
 // Files
 import './src/locales/index'; // import i18n (needs to be bundled ;))
@@ -15,10 +16,30 @@ import {persistor, store} from './src/redux/store';
 import {darkTheme, theme} from './src/theme';
 import {Fonts} from './src/constants';
 import {getScreenHeight} from './src/utils/commonServices';
-import Config from 'react-native-config';
 
 const App = () => {
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    const createUserInFirestore = async () => {
+      console.log('createUserInFirestore called');
+      try {
+        // Reference to the Firestore collection where user data will be stored
+        const usersCollection = firestore().collection('users');
+
+        // Add user data to Firestore
+        await usersCollection.doc(Math.random().toString()).set({
+          name: 'Shivam',
+        });
+
+        console.log('User created successfully in Firestore!');
+      } catch (error) {
+        console.error('Error creating user in Firestore:', error);
+      }
+    };
+
+    createUserInFirestore();
+  }, []);
 
   return (
     <ThemeProvider theme={colorScheme === 'light' ? theme : darkTheme}>
