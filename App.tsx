@@ -18,6 +18,7 @@ import {Fonts} from './src/constants';
 import {getScreenHeight} from './src/utils/commonServices';
 
 const App = () => {
+  console.log('This is the new change in the App.tsx');
   const colorScheme = useColorScheme();
 
   useEffect(() => {
