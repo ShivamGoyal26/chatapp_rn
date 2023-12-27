@@ -35,7 +35,7 @@ const ChatItem = ({
         <Text numberOfLines={1} variant="title">
           {isGroupChat
             ? chatName
-            : users[0].id === userId
+            : users[0]._id === userId
             ? users[1].name
             : users[0].name}
         </Text>

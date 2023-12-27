@@ -8,11 +8,15 @@ import {useTheme} from '@shopify/restyle';
 import {getScreenHeight} from '../../utils/commonServices';
 import {ColorTheme, Theme} from '../../theme';
 import {Box, CustomHeader, LoadUsers} from '../../components';
+import {useDispatch} from 'react-redux';
+import {createChatThunk} from '../../redux/chat';
+import {AppDispatch} from '../../redux/store';
 
 const SearchUsers = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
+  const dispatch: AppDispatch = useDispatch();
 
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -23,11 +27,15 @@ const SearchUsers = () => {
     }
   }, [colors?.mainBackground]);
 
+  const onUserClick = (userId: string) => {
+    dispatch(createChatThunk({userId}));
+  };
+
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
       <CustomHeader title={t('appNamespace.searchUsers')} />
       <Box marginHorizontal={'m'} flex={1}>
-        <LoadUsers />
+        <LoadUsers action={onUserClick} />
       </Box>
     </SafeAreaView>
   );

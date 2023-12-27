@@ -13,6 +13,7 @@ import {useForm, Controller, SubmitHandler} from 'react-hook-form';
 import {useTheme} from '@shopify/restyle';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Lottie from 'lottie-react-native';
+import axios from 'axios';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
@@ -30,7 +31,6 @@ import {
 } from '../../components';
 import {goBack} from '../../utils/routerServices';
 import {registerThunk} from '../../redux/auth';
-import axios from 'axios';
 import {PickImageType} from '../../types/common';
 import {uploadAssetsThunk} from '../../redux/assets';
 import {UploadAssets} from '../../types/assets';
