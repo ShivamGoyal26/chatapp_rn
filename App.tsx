@@ -18,28 +18,8 @@ import {Fonts} from './src/constants';
 import {getScreenHeight} from './src/utils/commonServices';
 
 const App = () => {
+  console.log('This is the new change in the App.tsx');
   const colorScheme = useColorScheme();
-
-  useEffect(() => {
-    const createUserInFirestore = async () => {
-      console.log('createUserInFirestore called');
-      try {
-        // Reference to the Firestore collection where user data will be stored
-        const usersCollection = firestore().collection('users');
-
-        // Add user data to Firestore
-        await usersCollection.doc(Math.random().toString()).set({
-          name: 'Shivam',
-        });
-
-        console.log('User created successfully in Firestore!');
-      } catch (error) {
-        console.error('Error creating user in Firestore:', error);
-      }
-    };
-
-    createUserInFirestore();
-  }, []);
 
   return (
     <ThemeProvider theme={colorScheme === 'light' ? theme : darkTheme}>
