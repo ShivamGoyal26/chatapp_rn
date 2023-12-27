@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo} from 'react';
-import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {Alert, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@shopify/restyle';
@@ -15,7 +15,11 @@ import {Images, Routes} from '../../constants';
 import {UserDataFromServer} from '../../types/auth';
 import Spinner from '../../utils/spinnerRef';
 import {AppDispatch, RootState} from '../../redux/store';
-import {removeUserFromGroupThunk, setChatInfo} from '../../redux/chat';
+import {
+  deleteGroupThunk,
+  removeUserFromGroupThunk,
+  setChatInfo,
+} from '../../redux/chat';
 
 type RenderItemProps = UserDataFromServer & {
   onUserDeletePress: (userId: string) => void;
@@ -54,7 +58,16 @@ const RenderItem = ({
         </Text>
         {isAdmin && isDeleteable ? (
           <TouchableOpacity
-            onPress={() => onUserDeletePress(_id)}
+            onPress={() =>
+              Alert.alert('Are you sure?', `you are removing user ${name}`, [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () => onUserDeletePress(_id)},
+              ])
+            }
             style={{alignSelf: 'flex-start'}}>
             <Text variant={'error'}>{t('appNamespace.remove')}</Text>
           </TouchableOpacity>
@@ -97,7 +110,7 @@ const GroupInfo = () => {
 
   const isDeleteable = useMemo(() => {
     let userLength = data?.users.length;
-    if (userLength === 2) {
+    if (userLength === 1) {
       return false;
     }
     return true;
@@ -143,7 +156,26 @@ const GroupInfo = () => {
           )}
         />
         {isAdmin ? (
-          <TouchableOpacity style={{alignSelf: 'center'}}>
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert(
+                'Are you sure?',
+                `${chatInfo?.chatName} is going to be deleted`,
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'OK',
+                    onPress: () =>
+                      dispatch(deleteGroupThunk({chatId: chatInfo?._id})),
+                  },
+                ],
+              );
+            }}
+            style={{alignSelf: 'center'}}>
             <Text marginBottom={'m'} variant={'title'} color={'error'}>
               {t('appNamespace.deleteGroup')}
             </Text>

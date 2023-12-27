@@ -20,7 +20,7 @@ const RenderSeparator = () => {
   );
 };
 
-const LoadUsers = () => {
+const LoadUsers = ({action}: {action?: () => void}) => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
@@ -108,7 +108,9 @@ const LoadUsers = () => {
       <FlatList
         data={users}
         keyExtractor={user => `${user._id}`}
-        renderItem={({item}: {item: SearchedUser}) => <UserItem {...item} />}
+        renderItem={({item}: {item: SearchedUser}) => (
+          <UserItem action={action} {...item} />
+        )}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.1}
         ListFooterComponent={renderFotter}
