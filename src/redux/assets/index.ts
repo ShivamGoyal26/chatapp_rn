@@ -25,77 +25,73 @@ const assetsSlice = createSlice({
 
 export const uploadAssetsThunk = createAsyncThunk(
   'assets/uploadAssetsThunk',
-  async (data: UploadAssets, {dispatch}) => {
-    return new Promise(async (resolve, reject) => {
-      Spinner.show();
-      let key = `${Date.now()}${data.filename}`;
-      let res = await apiCall({
-        type: api.apiTypes.post,
-        url: api.endpoints.UPLOAD_ASSET_URL,
-        data: {
-          filename: key,
-          contentType: data.contentType,
-          path: 'uploads/images/',
-        },
-        enableLoader: false,
-      });
-
-      if (res?.status && data.imageData?.uri) {
-        const imageFormData = await fetch(data.imageData?.uri);
-        const blob = await imageFormData.blob();
-        fetch(res.url, {
-          method: 'PUT',
-          body: blob,
-        })
-          .then(response => {
-            if (response.status === 200 && response.ok) {
-              dispatch(
-                registerThunk({
-                  email: data.email,
-                  name: data.name,
-                  cancelToken: data.cancelToken,
-                  password: data.password,
-                  key: key,
-                }),
-              );
-            }
-          })
-          .catch(e => {
-            console.log(e);
-            toast.showErrorMessage(
-              'failed to upload the image, try after sometime',
-            );
-          })
-          .finally(() => {
-            Spinner.hide();
-          });
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res);
-        Spinner.hide();
-      }
+  async (data: UploadAssets, {dispatch, rejectWithValue}) => {
+    Spinner.show();
+    let key = `${Date.now()}${data.filename}`;
+    let res = await apiCall({
+      type: api.apiTypes.post,
+      url: api.endpoints.UPLOAD_ASSET_URL,
+      data: {
+        filename: key,
+        contentType: data.contentType,
+        path: 'uploads/images/',
+      },
+      enableLoader: false,
     });
+
+    if (res?.status && data.imageData?.uri) {
+      const imageFormData = await fetch(data.imageData?.uri);
+      const blob = await imageFormData.blob();
+      fetch(res.url, {
+        method: 'PUT',
+        body: blob,
+      })
+        .then(response => {
+          if (response.status === 200 && response.ok) {
+            dispatch(
+              registerThunk({
+                email: data.email,
+                name: data.name,
+                cancelToken: data.cancelToken,
+                password: data.password,
+                key: key,
+              }),
+            );
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          toast.showErrorMessage(
+            'failed to upload the image, try after sometime',
+          );
+        })
+        .finally(() => {
+          Spinner.hide();
+        });
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res);
+      Spinner.hide();
+    }
   },
 );
 
 export const getAssetsThunk = createAsyncThunk(
   'assets/getAssetsThunk',
-  async (key: string) => {
-    return new Promise(async (resolve, reject) => {
-      let res = await apiCall({
-        type: api.apiTypes.post,
-        url: api.endpoints.GET_ASSET_URL,
-        data: {
-          key: `uploads/images/${key}`,
-        },
-        enableLoader: false,
-      });
-      if (res.status) {
-        resolve(res.url);
-      } else {
-        reject('no image found');
-      }
+  async (key: string, {rejectWithValue}) => {
+    let res = await apiCall({
+      type: api.apiTypes.post,
+      url: api.endpoints.GET_ASSET_URL,
+      data: {
+        key: `uploads/images/${key}`,
+      },
+      enableLoader: false,
     });
+    if (res.status) {
+      return res.url;
+    } else {
+      rejectWithValue('no image found');
+    }
   },
 );
 
