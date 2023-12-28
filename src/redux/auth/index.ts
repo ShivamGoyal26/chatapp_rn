@@ -46,76 +46,73 @@ export const logoutThunk = createAsyncThunk(
 
 export const loginThunk = createAsyncThunk(
   'auth/loginThunk',
-  async (data: {data: LoginInputData; cancelToken: any}, {dispatch}) => {
-    return new Promise(async (resolve, reject) => {
-      let res = await apiCall({
-        type: api.apiTypes.post,
-        url: api.endpoints.LOGIN_URL,
-        data: data.data,
-        cancelToken: data.cancelToken,
-      });
-      if (res?.status) {
-        dispatch(setUserData(res.data));
-        dispatch(setAuthToken(res.data.token));
-        resetRoot(Routes.HOME_STACK);
-        resolve(res);
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res?.message);
-      }
+  async (
+    data: {data: LoginInputData; cancelToken: any},
+    {dispatch, rejectWithValue},
+  ) => {
+    let res = await apiCall({
+      type: api.apiTypes.post,
+      url: api.endpoints.LOGIN_URL,
+      data: data.data,
+      cancelToken: data.cancelToken,
     });
+    if (res?.status) {
+      dispatch(setUserData(res.data));
+      dispatch(setAuthToken(res.data.token));
+      resetRoot(Routes.HOME_STACK);
+      return res;
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
   },
 );
 
 export const registerThunk = createAsyncThunk(
   'auth/registerThunk',
-  async (data: SignUpInputData, {dispatch}) => {
-    return new Promise(async (resolve, reject) => {
-      let registerData: any = {
-        email: data.email,
-        password: data.password,
-        name: data.name,
-      };
-      if (data.key) {
-        registerData['pic'] = data.key;
-      }
-      let res = await apiCall({
-        type: api.apiTypes.post,
-        url: api.endpoints.SIGNUP_URL,
-        data: registerData,
-        cancelToken: data.cancelToken,
-      });
-      if (res?.status) {
-        dispatch(setUserData(res.data));
-        dispatch(setAuthToken(res.data.token));
-        resetRoot(Routes.HOME_STACK);
-        resolve(res);
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res?.message);
-      }
+  async (data: SignUpInputData, {dispatch, rejectWithValue}) => {
+    let registerData: any = {
+      email: data.email,
+      password: data.password,
+      name: data.name,
+    };
+    if (data.key) {
+      registerData['pic'] = data.key;
+    }
+    let res = await apiCall({
+      type: api.apiTypes.post,
+      url: api.endpoints.SIGNUP_URL,
+      data: registerData,
+      cancelToken: data.cancelToken,
     });
+    if (res?.status) {
+      dispatch(setUserData(res.data));
+      dispatch(setAuthToken(res.data.token));
+      resetRoot(Routes.HOME_STACK);
+      return res;
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
   },
 );
 
 export const findUsersThunk = createAsyncThunk(
   'auth/findUsersThunk',
-  async (data: SearchUsersRequestData) => {
-    return new Promise(async (resolve, reject) => {
-      let res = await apiCall({
-        type: api.apiTypes.get,
-        url: api.endpoints.FIND_USER,
-        enableLoader: false,
-        // cancelToken: data.cancelToken,
-        params: data,
-      });
-      if (res.status) {
-        resolve({data: res.data, pages: res.pages});
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res?.message);
-      }
+  async (data: SearchUsersRequestData, {rejectWithValue}) => {
+    let res = await apiCall({
+      type: api.apiTypes.get,
+      url: api.endpoints.FIND_USER,
+      enableLoader: false,
+      // cancelToken: data.cancelToken,
+      params: data,
     });
+    if (res.status) {
+      return {data: res.data, pages: res.pages};
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
   },
 );
 

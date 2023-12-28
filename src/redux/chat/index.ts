@@ -41,155 +41,141 @@ const chatSlice = createSlice({
 
 export const getUserChatsThunk = createAsyncThunk(
   'chat/getUserChatsThunk',
-  async (userChatParams: PageProps) => {
-    return new Promise(async (resolve, reject) => {
-      let res = await apiCall({
-        type: api.apiTypes.get,
-        url: api.endpoints.USER_CHATS,
-        params: userChatParams,
-      });
-      if (res?.status) {
-        resolve({data: res.data, pages: res.pages});
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res?.message);
-      }
+  async (userChatParams: PageProps, {rejectWithValue}) => {
+    let res = await apiCall({
+      type: api.apiTypes.get,
+      url: api.endpoints.USER_CHATS,
+      params: userChatParams,
     });
+    if (res?.status) {
+      return {data: res.data, pages: res.pages};
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
   },
 );
 
 export const createGroupThunk = createAsyncThunk(
   'chat/createGroupThunk',
-  async (data: CreateGroupBody) => {
+  async (data: CreateGroupBody, {rejectWithValue}) => {
     if (!data?.name) {
       return toast.showErrorMessage(t('messagesNamespace.groupName'));
     }
     if (data.users?.length < 2) {
       return toast.showErrorMessage(t('messagesNamespace.leastGroupMembers'));
     }
-    return new Promise(async (resolve, reject) => {
-      let res = await apiCall({
-        type: api.apiTypes.post,
-        url: api.endpoints.CREATE_GROUP,
-        data: data,
-      });
-      if (res?.status) {
-        console.log('This is the res', res);
-        goBack();
-        toast.showSuccessMessage(res.message);
-        // resolve({data: res.data, pages: res.pages});
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res?.message);
-      }
+    let res = await apiCall({
+      type: api.apiTypes.post,
+      url: api.endpoints.CREATE_GROUP,
+      data: data,
     });
+    if (res?.status) {
+      console.log('This is the res', res);
+      goBack();
+      toast.showSuccessMessage(res.message);
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
   },
 );
 
 export const createChatThunk = createAsyncThunk(
   'chat/createChatThunk',
-  async (data: {userId: string}, {dispatch}) => {
+  async (data: {userId: string}, {dispatch, rejectWithValue}) => {
     if (!data?.userId) {
       return toast.showErrorMessage(t('Please select the user'));
     }
-    return new Promise(async (resolve, reject) => {
-      Spinner.show();
-      let res = await apiCall({
-        type: api.apiTypes.post,
-        url: api.endpoints.CREATE_CHAT,
-        data: data,
-      });
-      Spinner.hide();
-      if (res?.status) {
-        dispatch(setChatInfo(res.data));
-        navigate(Routes.CHAT_STACK, {});
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res?.message);
-      }
+    Spinner.show();
+    let res = await apiCall({
+      type: api.apiTypes.post,
+      url: api.endpoints.CREATE_CHAT,
+      data: data,
     });
+    Spinner.hide();
+    if (res?.status) {
+      dispatch(setChatInfo(res.data));
+      navigate(Routes.CHAT_STACK, {});
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
   },
 );
 
 export const removeUserFromGroupThunk = createAsyncThunk(
   'chat/removeUserFromGroupThunk',
-  async (data: RemoveUserFromGroupAPIBodyData) => {
+  async (data: RemoveUserFromGroupAPIBodyData, {rejectWithValue}) => {
     if (!data?.chatId) {
       return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
     }
     if (!data.userId) {
       return toast.showErrorMessage(t('messagesNamespace.enterUserId'));
     }
-    return new Promise(async (resolve, reject) => {
-      let res = await apiCall({
-        type: api.apiTypes.put,
-        url: api.endpoints.REMOVE_USER,
-        data: data,
-        enableLoader: false,
-      });
-      if (res?.status) {
-        console.log('This is the res', res);
-        toast.showSuccessMessage(res.message);
-        resolve({data: res.data});
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res?.message);
-      }
+    let res = await apiCall({
+      type: api.apiTypes.put,
+      url: api.endpoints.REMOVE_USER,
+      data: data,
+      enableLoader: false,
     });
+    if (res?.status) {
+      console.log('This is the res', res);
+      toast.showSuccessMessage(res.message);
+      return {data: res.data};
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
   },
 );
 
 export const deleteGroupThunk = createAsyncThunk(
   'chat/deleteGroupThunk',
-  async (data: {chatId: string}) => {
+  async (data: {chatId: string}, {rejectWithValue}) => {
     if (!data?.chatId) {
       return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
     }
-    return new Promise(async (resolve, reject) => {
-      Spinner.show();
-      let res = await apiCall({
-        type: api.apiTypes.delete,
-        url: api.endpoints.DELETE_GROUP,
-        params: data,
-        enableLoader: false,
-      });
-      Spinner.hide();
-      if (res?.status) {
-        console.log('This is the res', res);
-        toast.showSuccessMessage(res.message);
-        navigate(routes.CHATS, {});
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res?.message);
-      }
+    Spinner.show();
+    let res = await apiCall({
+      type: api.apiTypes.delete,
+      url: api.endpoints.DELETE_GROUP,
+      params: data,
+      enableLoader: false,
     });
+    Spinner.hide();
+    if (res?.status) {
+      toast.showSuccessMessage(res.message);
+      navigate(routes.CHATS, {});
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
   },
 );
 
 export const addUserFromGroupThunk = createAsyncThunk(
   'chat/addUserFromGroupThunk',
-  async (data: AddUsersGroupAPIBodyData) => {
+  async (data: AddUsersGroupAPIBodyData, {rejectWithValue}) => {
     if (!data?.chatId) {
       return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
     }
     if (!data.userIds?.length) {
       return toast.showErrorMessage(t('messagesNamespace.enterUserId'));
     }
-    return new Promise(async (resolve, reject) => {
-      let res = await apiCall({
-        type: api.apiTypes.put,
-        url: api.endpoints.ADD_USER,
-        data: data,
-        enableLoader: false,
-      });
-      if (res?.status) {
-        toast.showSuccessMessage(res.message);
-        resolve({data: res.data});
-      } else {
-        toast.showErrorMessage(res?.message);
-        reject(res?.message);
-      }
+    let res = await apiCall({
+      type: api.apiTypes.put,
+      url: api.endpoints.ADD_USER,
+      data: data,
+      enableLoader: false,
     });
+    if (res?.status) {
+      toast.showSuccessMessage(res.message);
+      return {data: res.data};
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
   },
 );
 

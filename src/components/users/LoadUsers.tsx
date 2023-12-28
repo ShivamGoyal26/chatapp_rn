@@ -100,8 +100,6 @@ const LoadUsers = ({action}: {action?: () => void}) => {
     ) : null;
   }, [loading, t]);
 
-  console.log('users', users);
-
   return (
     <Box flex={1} backgroundColor="mainBackground">
       <UserSearch action={keywordHandler} />
