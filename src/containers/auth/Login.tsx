@@ -1,8 +1,7 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {
   Keyboard,
   Platform,
-  StatusBar,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -32,8 +31,6 @@ import {
   CustomTextInput,
   Text,
 } from '../../components';
-import {trackEvent} from 'appcenter-analytics';
-import {generateTestCrash} from 'appcenter-crashes';
 
 const Login = () => {
   const theme = useTheme<Theme>();
@@ -47,8 +44,6 @@ const Login = () => {
   const cancelToken = useRef<any>();
 
   const [secure, setSecure] = useState(true);
-
-
 
   const {
     control,

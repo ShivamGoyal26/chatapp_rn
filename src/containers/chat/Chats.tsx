@@ -23,7 +23,6 @@ import {ChatItem as ChatItemProps} from '../../types/chat';
 import images from '../../constants/images';
 import {navigate} from '../../utils/routerServices';
 import {Routes} from '../../constants';
-import {generateTestCrash} from 'appcenter-crashes';
 
 const PER_CHAT_LIMIT = 10;
 
