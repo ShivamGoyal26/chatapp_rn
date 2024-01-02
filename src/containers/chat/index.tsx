@@ -13,7 +13,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@shopify/restyle';
 import FastImage from 'react-native-fast-image';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
@@ -22,13 +22,15 @@ import {Box, CustomHeader} from '../../components';
 import images from '../../constants/images';
 import {goBack, navigate} from '../../utils/routerServices';
 import {Images, Routes} from '../../constants';
-import {RootState} from '../../redux/store';
+import {AppDispatch, RootState} from '../../redux/store';
 import fonts from '../../constants/fonts';
+import {sendMessageThunk} from '../../redux/chat';
 
 const Chat = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
+  const dispatch: AppDispatch = useDispatch();
 
   const chatInfo = useSelector((state: RootState) => state.chat.chatInfo);
   const userData = useSelector((state: RootState) => state.auth.userData);
@@ -58,6 +60,12 @@ const Chat = () => {
       StatusBar.setBarStyle('dark-content');
     }
   }, [colors?.mainBackground]);
+
+  const onPressSend = () => {
+    if (message) {
+      dispatch(sendMessageThunk({content: message, chatId: chatInfo?._id}));
+    }
+  };
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
@@ -89,7 +97,7 @@ const Chat = () => {
                 multiline={true}
               />
             </Box>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onPressSend}>
               <FastImage source={Images.send} style={styles.icon} />
             </TouchableOpacity>
           </Box>

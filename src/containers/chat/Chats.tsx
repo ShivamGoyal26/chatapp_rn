@@ -58,7 +58,7 @@ const Chats = () => {
     let res: any = await dispatch(getUserChatsThunk(userChatParams));
     setLoading(false);
     if (res.meta.requestStatus === 'fulfilled') {
-      setChats(pre => pre.concat(res.payload.data));
+      setChats(pre => pre.concat(res?.payload?.data));
       totalPagesRef.current = res.payload.pages;
     }
   }, [dispatch]);
@@ -139,7 +139,9 @@ const Chats = () => {
         backgroundColor="mainBackground">
         <FlatList
           data={chats}
-          keyExtractor={chat => `${chat._id}`}
+          keyExtractor={(chat, index) => {
+            return index.toString();
+          }}
           renderItem={({item}: {item: ChatItemProps}) => (
             <TouchableOpacity onPress={() => onChatItemClick(item)}>
               <ChatItem {...item} userId={userData?.id} />
