@@ -46,6 +46,10 @@ const ChatItem = ({
           </Text>
         ) : null}
         <Text numberOfLines={1} variant="subtitle">
+          {latestMessage.sender._id === userId
+            ? 'You'
+            : latestMessage.sender.name}
+          {': '}
           {latestMessage ? latestMessage.content : 'Start chatting...'}
         </Text>
         <Text numberOfLines={1} textAlign={'right'} variant="subtitle">

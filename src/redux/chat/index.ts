@@ -1,4 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {CancelToken} from 'axios';
+
+// Files
 import apiCall from '../../services/apiCall';
 import api from '../../constants/api';
 import toast from '../../utils/toast';
@@ -15,14 +18,34 @@ import routes from '../../constants/routes';
 import Spinner from '../../utils/spinnerRef';
 import {Routes} from '../../constants';
 
-// Files
+export type MessageItem = {
+  _id: string;
+  sender: {
+    _id: string;
+    name: string;
+    pic: null | string;
+    email: string;
+  };
+  chat: {
+    chatName: string;
+    createdAt: string;
+    isGroupChat: boolean;
+    latestMessage: string;
+    _id: string;
+  };
+  content: string;
+  updatedAt: string;
+  createdAt: string;
+};
 
 const initialState: {
   userChats: ChatItem[] | [];
   chatInfo: ChatItem | null;
+  chatMessages: MessageItem[];
 } = {
   userChats: [],
   chatInfo: null,
+  chatMessages: [],
 };
 
 const chatSlice = createSlice({
@@ -35,6 +58,9 @@ const chatSlice = createSlice({
     },
     setChatInfo(state, action) {
       state.chatInfo = action.payload;
+    },
+    setChatMessages(state, action) {
+      state.chatMessages = action.payload;
     },
   },
 });
@@ -185,7 +211,6 @@ export const sendMessageThunk = createAsyncThunk(
     data: {chatId: string | undefined; content: string},
     {rejectWithValue},
   ) => {
-    console.log('sendMessageThunk', data);
     if (!data?.chatId) {
       return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
     }
@@ -198,9 +223,7 @@ export const sendMessageThunk = createAsyncThunk(
       data: data,
       enableLoader: false,
     });
-    console.log('This is the response>>>>>>>>>>>>>>>>>>>>', res);
     if (res?.status) {
-      toast.showSuccessMessage(res.message);
       return {data: res.data};
     } else {
       toast.showErrorMessage(res?.message);
@@ -209,6 +232,38 @@ export const sendMessageThunk = createAsyncThunk(
   },
 );
 
-export const {setUserChats, resetChatSlice, setChatInfo} = chatSlice.actions;
+export const fetchMessagesThunk = createAsyncThunk(
+  'chat/fetchMessagesThunk',
+  async (
+    {
+      chatId,
+      cancelToken,
+    }: {chatId: string | undefined; cancelToken: CancelToken},
+    {rejectWithValue, dispatch},
+  ) => {
+    if (!chatId) {
+      return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
+    }
+    let res = await apiCall({
+      type: api.apiTypes.get,
+      url: api.endpoints.SEND_MESSAGE,
+      params: {chatId: chatId},
+      enableLoader: false,
+      cancelToken: cancelToken,
+    });
+    console.log(JSON.stringify(res));
+    if (res?.status) {
+      if (res.data.length) {
+        dispatch(setChatMessages(res.data));
+      }
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
+  },
+);
+
+export const {setUserChats, resetChatSlice, setChatInfo, setChatMessages} =
+  chatSlice.actions;
 
 export default chatSlice.reducer;
