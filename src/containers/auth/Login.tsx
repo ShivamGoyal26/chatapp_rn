@@ -48,17 +48,7 @@ const Login = () => {
 
   const [secure, setSecure] = useState(true);
 
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      StatusBar.setBackgroundColor(colors.mainBackground);
-      StatusBar.setBarStyle('dark-content');
-    }
-    return () => {
-      if (cancelToken?.current) {
-        cancelToken.current('Cancelled');
-      }
-    };
-  }, [colors?.mainBackground]);
+
 
   const {
     control,
