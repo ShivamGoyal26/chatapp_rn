@@ -21,5 +21,6 @@ export default {
     REMOVE_USER: 'chat/removeuserfromgroup',
     ADD_USER: 'chat/adduserstogroup',
     DELETE_GROUP: 'chat/deleteGroup',
+    SEND_MESSAGE: 'message',
   },
 };

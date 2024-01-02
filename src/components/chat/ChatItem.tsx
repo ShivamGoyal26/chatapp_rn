@@ -16,6 +16,7 @@ const ChatItem = ({
   updatedAt,
   users,
   userId,
+  latestMessage,
 }: ChatItemProps & {userId: string | null | undefined}) => {
   const {t} = useTranslation();
 
@@ -45,6 +46,9 @@ const ChatItem = ({
           </Text>
         ) : null}
         <Text numberOfLines={1} variant="subtitle">
+          {latestMessage ? latestMessage.content : 'Start chatting...'}
+        </Text>
+        <Text numberOfLines={1} textAlign={'right'} variant="subtitle">
           {dayjs(updatedAt).fromNow()}
         </Text>
       </Box>
