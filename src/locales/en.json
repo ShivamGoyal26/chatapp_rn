@@ -38,7 +38,8 @@
     "remove": "remove",
     "deleteGroup": "delete group",
     "addMembers": "add members",
-    "add": "add"
+    "add": "add",
+    "leaveGroup": "Leave Group"
   },
   "messagesNamespace": {
     "languageError": "language not changed, please try again later!",

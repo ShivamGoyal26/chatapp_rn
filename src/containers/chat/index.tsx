@@ -29,9 +29,10 @@ const Chat = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
-  const chatInfo = useSelector((state: RootState) => state.chat.chatInfo);
 
+  const chatInfo = useSelector((state: RootState) => state.chat.chatInfo);
   const userData = useSelector((state: RootState) => state.auth.userData);
+
   const [message, setMessage] = useState('');
 
   const headerName = useMemo(() => {
