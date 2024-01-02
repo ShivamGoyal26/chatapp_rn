@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   FlatList,
   KeyboardAvoidingView,
@@ -7,13 +7,13 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@shopify/restyle';
 import FastImage from 'react-native-fast-image';
 import {useDispatch, useSelector} from 'react-redux';
+import axios from 'axios';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
@@ -24,15 +24,24 @@ import {goBack, navigate} from '../../utils/routerServices';
 import {Images, Routes} from '../../constants';
 import {AppDispatch, RootState} from '../../redux/store';
 import fonts from '../../constants/fonts';
-import {sendMessageThunk} from '../../redux/chat';
+import {
+  fetchMessagesThunk,
+  sendMessageThunk,
+  setChatMessages,
+} from '../../redux/chat';
+import Message from '../../components/chat/Message';
 
 const Chat = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
   const dispatch: AppDispatch = useDispatch();
+  const cancelToken = useRef<any>();
 
   const chatInfo = useSelector((state: RootState) => state.chat.chatInfo);
+  const chatMessages = useSelector(
+    (state: RootState) => state.chat.chatMessages,
+  );
   const userData = useSelector((state: RootState) => state.auth.userData);
 
   const [message, setMessage] = useState('');
@@ -55,15 +64,26 @@ const Chat = () => {
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   useEffect(() => {
+    const {cancel, token} = axios.CancelToken.source();
+    cancelToken.current = cancel;
+    dispatch(fetchMessagesThunk({chatId: chatInfo?._id, cancelToken: token}));
     if (Platform.OS === 'android') {
       StatusBar.setBackgroundColor(colors.mainBackground);
       StatusBar.setBarStyle('dark-content');
     }
-  }, [colors?.mainBackground]);
+
+    return () => {
+      dispatch(setChatMessages([]));
+      if (cancelToken?.current) {
+        cancelToken?.current('Cancelled');
+      }
+    };
+  }, [chatInfo?._id, colors.mainBackground, dispatch]);
 
   const onPressSend = () => {
     if (message) {
       dispatch(sendMessageThunk({content: message, chatId: chatInfo?._id}));
+      setMessage('');
     }
   };
 
@@ -82,9 +102,10 @@ const Chat = () => {
         style={{flex: 1}}>
         <Box margin="s" flex={1} backgroundColor="mainBackground">
           <FlatList
-            data={[]}
+            inverted
+            data={chatMessages}
             keyExtractor={(_, index) => index.toString()}
-            renderItem={() => <View />}
+            renderItem={({item}) => <Message item={item} />}
           />
           <Box margin={'l'} flexDirection={'row'} alignItems={'center'}>
             <Box maxHeight={getScreenHeight(10)} marginRight={'m'} flex={1}>
