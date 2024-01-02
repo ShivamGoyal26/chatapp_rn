@@ -117,7 +117,7 @@ const GroupInfo = () => {
   }, [data?.users.length]);
 
   const onUserDeletePress = useCallback(
-    async (userId: string) => {
+    async (userId: string, isGoBack = null) => {
       const mainData = {
         userId: userId,
         chatId: chatInfo?._id,
@@ -126,6 +126,9 @@ const GroupInfo = () => {
       const res: any = await dispatch(removeUserFromGroupThunk(mainData));
       Spinner.hide();
       if (res.meta.requestStatus === 'fulfilled') {
+        if (isGoBack) {
+          goBack();
+        }
         dispatch(setChatInfo(res.payload.data));
       }
     },
@@ -180,7 +183,31 @@ const GroupInfo = () => {
               {t('appNamespace.deleteGroup')}
             </Text>
           </TouchableOpacity>
-        ) : null}
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert(
+                'Are you sure?',
+                `you are leaving the ${chatInfo?.chatName} group`,
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'OK',
+                    onPress: () => onUserDeletePress(userData?.id, true),
+                  },
+                ],
+              );
+            }}
+            style={{alignSelf: 'center'}}>
+            <Text marginBottom={'m'} variant={'title'} color={'error'}>
+              {t('appNamespace.leaveGroup')}
+            </Text>
+          </TouchableOpacity>
+        )}
       </Box>
     </SafeAreaView>
   );
