@@ -179,6 +179,36 @@ export const addUserFromGroupThunk = createAsyncThunk(
   },
 );
 
+export const sendMessageThunk = createAsyncThunk(
+  'chat/sendMessageThunk',
+  async (
+    data: {chatId: string | undefined; content: string},
+    {rejectWithValue},
+  ) => {
+    console.log('sendMessageThunk', data);
+    if (!data?.chatId) {
+      return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
+    }
+    if (!data.content) {
+      return toast.showErrorMessage(t('messagesNamespace.enterContent'));
+    }
+    let res = await apiCall({
+      type: api.apiTypes.post,
+      url: api.endpoints.SEND_MESSAGE,
+      data: data,
+      enableLoader: false,
+    });
+    console.log('This is the response>>>>>>>>>>>>>>>>>>>>', res);
+    if (res?.status) {
+      toast.showSuccessMessage(res.message);
+      return {data: res.data};
+    } else {
+      toast.showErrorMessage(res?.message);
+      rejectWithValue(res?.message);
+    }
+  },
+);
+
 export const {setUserChats, resetChatSlice, setChatInfo} = chatSlice.actions;
 
 export default chatSlice.reducer;
