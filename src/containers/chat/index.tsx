@@ -14,6 +14,7 @@ import {useTheme} from '@shopify/restyle';
 import FastImage from 'react-native-fast-image';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
+import {io} from 'socket.io-client';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
@@ -31,6 +32,9 @@ import {
 } from '../../redux/chat';
 import Message from '../../components/chat/Message';
 
+const ENDPOINT = 'http://192.168.29.88:3000';
+let socket, selectedChatCompare;
+
 const Chat = () => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
@@ -45,6 +49,10 @@ const Chat = () => {
   const userData = useSelector((state: RootState) => state.auth.userData);
 
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+  }, []);
 
   const headerName = useMemo(() => {
     if (chatInfo?.isGroupChat) {
