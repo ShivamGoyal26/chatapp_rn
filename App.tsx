@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, useColorScheme} from 'react-native';
@@ -6,7 +6,6 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {ThemeProvider} from '@shopify/restyle';
 import FlashMessage from 'react-native-flash-message';
-import firestore from '@react-native-firebase/firestore';
 
 // Files
 import './src/locales/index'; // import i18n (needs to be bundled ;))

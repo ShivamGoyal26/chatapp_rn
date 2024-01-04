@@ -17,6 +17,8 @@ import {goBack, navigate} from '../../utils/routerServices';
 import routes from '../../constants/routes';
 import Spinner from '../../utils/spinnerRef';
 import {Routes} from '../../constants';
+import {io} from 'socket.io-client';
+import {socketRef} from '../../routers/HomeStack';
 
 export type MessageItem = {
   _id: string;
@@ -224,6 +226,7 @@ export const sendMessageThunk = createAsyncThunk(
       enableLoader: false,
     });
     if (res?.status) {
+      socketRef.current.emit('new message', res.data);
       return {data: res.data};
     } else {
       toast.showErrorMessage(res?.message);
@@ -251,7 +254,6 @@ export const fetchMessagesThunk = createAsyncThunk(
       enableLoader: false,
       cancelToken: cancelToken,
     });
-    console.log(JSON.stringify(res));
     if (res?.status) {
       if (res.data.length) {
         dispatch(setChatMessages(res.data));

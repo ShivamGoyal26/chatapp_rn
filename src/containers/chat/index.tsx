@@ -31,8 +31,9 @@ import {
   setChatMessages,
 } from '../../redux/chat';
 import Message from '../../components/chat/Message';
+import api from '../../constants/api';
+import {socketRef} from '../../routers/HomeStack';
 
-const ENDPOINT = 'http://192.168.29.88:3000';
 let socket, selectedChatCompare;
 
 const Chat = () => {
@@ -49,10 +50,6 @@ const Chat = () => {
   const userData = useSelector((state: RootState) => state.auth.userData);
 
   const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    socket = io(ENDPOINT);
-  }, []);
 
   const headerName = useMemo(() => {
     if (chatInfo?.isGroupChat) {

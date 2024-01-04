@@ -32,7 +32,6 @@ const Message = ({item}: {item: MessageItem}) => {
         <Text variant={'subtitle'}>{item.sender.name[0]}</Text>
       </Box>
       <Box
-        flex={1}
         alignItems={
           item.sender._id === userData?.id ? 'flex-end' : 'flex-start'
         }>
