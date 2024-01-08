@@ -32,7 +32,6 @@ const Message = ({item}: {item: MessageItem}) => {
         <Text variant={'subtitle'}>{item.sender.name[0]}</Text>
       </Box>
       <Box
-        flex={1}
         alignItems={
           item.sender._id === userData?.id ? 'flex-end' : 'flex-start'
         }>
@@ -40,12 +39,14 @@ const Message = ({item}: {item: MessageItem}) => {
         <Text variant={'error'} color={'borderColor'}>
           {dayjs(item.createdAt).format('D-M-YY hh:mm a')}
         </Text>
-        <Text
-          textDecorationStyle={'dashed'}
-          variant={'error'}
-          color={'success'}>
-          sent by: {item.sender.name}
-        </Text>
+        {item.chat.isGroupChat && item.sender._id !== userData?.id ? (
+          <Text
+            textDecorationStyle={'dashed'}
+            variant={'error'}
+            color={'success'}>
+            sent by: {item.sender.name}
+          </Text>
+        ) : null}
       </Box>
     </Box>
   );
