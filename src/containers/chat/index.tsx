@@ -14,7 +14,6 @@ import {useTheme} from '@shopify/restyle';
 import FastImage from 'react-native-fast-image';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
-import {io} from 'socket.io-client';
 
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
@@ -31,10 +30,6 @@ import {
   setChatMessages,
 } from '../../redux/chat';
 import Message from '../../components/chat/Message';
-import api from '../../constants/api';
-import {socketRef} from '../../routers/HomeStack';
-
-let socket, selectedChatCompare;
 
 const Chat = () => {
   const theme = useTheme<Theme>();
