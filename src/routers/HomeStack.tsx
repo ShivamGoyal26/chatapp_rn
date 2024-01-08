@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {useDispatch, useSelector} from 'react-redux';
+import {Socket, io} from 'socket.io-client';
 
 // Files
 import {Routes} from '../constants';
 import BottomBar from './BottomBar';
 import {CreateGroup} from '../containers';
 import ChatStack from './ChatStack';
-import {useDispatch, useSelector} from 'react-redux';
-import {Socket, io} from 'socket.io-client';
 import api from '../constants/api';
 import {AppDispatch, RootState} from '../redux/store';
 import {messageFromSocketThunk} from '../redux/chat';
@@ -21,6 +21,8 @@ const HomeStack = () => {
 
   useEffect(() => {
     if (userData) {
+      socketRef.current?.off('setup');
+      socketRef.current?.off('message received');
       socketRef.current = io(api.sockets.ENDPOINT);
       socketRef.current.emit('setup', userData);
       socketRef.current.on('connected', () => {
@@ -29,10 +31,13 @@ const HomeStack = () => {
       socketRef?.current?.on('message received', newMessageRecieved => {
         dispatch(messageFromSocketThunk(newMessageRecieved));
       });
+    } else {
+      socketRef.current?.off('setup');
+      socketRef.current?.off('message received');
     }
 
     return () => {
-      socketRef.current?.emit('disconnect');
+      socketRef.current?.emit('reset');
       socketRef.current?.disconnect();
     };
   }, [dispatch, userData]);

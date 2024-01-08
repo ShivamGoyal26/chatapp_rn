@@ -9,6 +9,7 @@ import {resetCommonSlice} from '../common';
 import {resetRoot} from '../../utils/routerServices';
 import {Routes} from '../../constants';
 import {SearchUsersRequestData} from '../../types/common';
+import FastImage from 'react-native-fast-image';
 
 const initialState: {
   userData: UserData | null;
@@ -39,6 +40,7 @@ export const logoutThunk = createAsyncThunk(
       dispatch(resetAuthSlice());
       dispatch(resetCommonSlice());
       resetRoot(Routes.AUTH_STACK);
+      FastImage.clearDiskCache();
       // resolve('logout done');
     });
   },

@@ -38,7 +38,7 @@ const Chat = () => {
   const {t} = useTranslation();
   const dispatch: AppDispatch = useDispatch();
   const cancelToken = useRef<any>();
-  const timeoutRef = useRef();
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   const chatInfo = useSelector((state: RootState) => state.chat.chatInfo);
   const chatMessages = useSelector(
@@ -84,20 +84,18 @@ const Chat = () => {
   }, [chatInfo?._id, colors.mainBackground, dispatch]);
 
   useEffect(() => {
-    // Clear old listeners before setting up new ones
-    socketRef?.current?.off('typing');
-    socketRef?.current?.off('stoptyping');
-
-    socketRef?.current?.on('typing', res => {
-      console.log('Typing...');
+    socketRef?.current?.on('typing', () => {
       setTyping(true);
     });
 
-    socketRef?.current?.on('stoptyping', res => {
+    socketRef?.current?.on('stoptyping', () => {
       setTyping(false);
     });
 
     return () => {
+      // Clear old listeners before setting up new ones
+      socketRef?.current?.off('typing');
+      socketRef?.current?.off('stoptyping');
       socketRef?.current?.emit('leave chat', chatInfo?._id);
     };
   }, [chatInfo?._id]);

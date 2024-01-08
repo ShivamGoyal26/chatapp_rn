@@ -58,7 +58,11 @@ const Chats = () => {
     let res: any = await dispatch(getUserChatsThunk(userChatParams));
     setLoading(false);
     if (res.meta.requestStatus === 'fulfilled') {
-      setChats(pre => pre.concat(res?.payload?.data));
+      if (userChatParams.page === 1) {
+        setChats(res?.payload?.data);
+      } else {
+        setChats(pre => pre.concat(res?.payload?.data));
+      }
       totalPagesRef.current = res.payload.pages;
     }
   }, [dispatch]);
@@ -66,7 +70,6 @@ const Chats = () => {
   useFocusEffect(
     React.useCallback(() => {
       if (isInternet) {
-        setChats([]);
         currentPageRef.current = 1;
         totalPagesRef.current = 1;
         getUserChats();
