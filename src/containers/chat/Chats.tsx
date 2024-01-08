@@ -23,6 +23,7 @@ import {ChatItem as ChatItemProps} from '../../types/chat';
 import images from '../../constants/images';
 import {navigate} from '../../utils/routerServices';
 import {Routes} from '../../constants';
+import {socketRef} from '../../routers/HomeStack';
 
 const PER_CHAT_LIMIT = 10;
 
@@ -117,6 +118,7 @@ const Chats = () => {
 
   const onChatItemClick = useCallback(
     (data: ChatItemProps) => {
+      socketRef?.current?.emit('join chat', data._id);
       dispatch(setChatInfo(data));
       navigate(Routes.CHAT_STACK, {});
     },

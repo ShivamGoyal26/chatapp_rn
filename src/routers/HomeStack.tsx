@@ -27,10 +27,14 @@ const HomeStack = () => {
         console.log('Socket connected ');
       });
       socketRef?.current?.on('message received', newMessageRecieved => {
-        console.log('newMessageRecieved', newMessageRecieved);
         dispatch(messageFromSocketThunk(newMessageRecieved));
       });
     }
+
+    return () => {
+      socketRef.current?.emit('disconnect');
+      socketRef.current?.disconnect();
+    };
   }, [dispatch, userData]);
 
   return (
