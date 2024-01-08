@@ -23,6 +23,7 @@ import {ChatItem as ChatItemProps} from '../../types/chat';
 import images from '../../constants/images';
 import {navigate} from '../../utils/routerServices';
 import {Routes} from '../../constants';
+import {socketRef} from '../../routers/HomeStack';
 
 const PER_CHAT_LIMIT = 10;
 
@@ -57,7 +58,11 @@ const Chats = () => {
     let res: any = await dispatch(getUserChatsThunk(userChatParams));
     setLoading(false);
     if (res.meta.requestStatus === 'fulfilled') {
-      setChats(pre => pre.concat(res?.payload?.data));
+      if (userChatParams.page === 1) {
+        setChats(res?.payload?.data);
+      } else {
+        setChats(pre => pre.concat(res?.payload?.data));
+      }
       totalPagesRef.current = res.payload.pages;
     }
   }, [dispatch]);
@@ -65,7 +70,6 @@ const Chats = () => {
   useFocusEffect(
     React.useCallback(() => {
       if (isInternet) {
-        setChats([]);
         currentPageRef.current = 1;
         totalPagesRef.current = 1;
         getUserChats();
@@ -117,6 +121,7 @@ const Chats = () => {
 
   const onChatItemClick = useCallback(
     (data: ChatItemProps) => {
+      socketRef?.current?.emit('join chat', data._id);
       dispatch(setChatInfo(data));
       navigate(Routes.CHAT_STACK, {});
     },
