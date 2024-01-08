@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {CancelToken} from 'axios';
+import {t} from 'i18next';
 
 // Files
 import apiCall from '../../services/apiCall';
@@ -12,11 +13,12 @@ import {
   RemoveUserFromGroupAPIBodyData,
 } from '../../types/chat';
 import {PageProps} from '../../types/common';
-import {t} from 'i18next';
 import {goBack, navigate} from '../../utils/routerServices';
 import routes from '../../constants/routes';
 import Spinner from '../../utils/spinnerRef';
 import {Routes} from '../../constants';
+import {socketRef} from '../../routers/HomeStack';
+import {RootState} from '../store';
 
 export type MessageItem = {
   _id: string;
@@ -79,6 +81,27 @@ export const getUserChatsThunk = createAsyncThunk(
       toast.showErrorMessage(res?.message);
       rejectWithValue(res?.message);
     }
+  },
+);
+
+export const messageFromSocketThunk = createAsyncThunk(
+  'chat/messageFromSocketThunk',
+  async (message: MessageItem, {getState, dispatch}) => {
+    const state = getState() as RootState;
+    const chatMessages: MessageItem[] = state.chat.chatMessages;
+    console.log(chatMessages[0].chat._id, message.chat._id);
+    if (chatMessages.length) {
+      if (chatMessages[0].chat._id === message.chat._id) {
+        // add the message
+        dispatch(setChatMessages([message, ...chatMessages]));
+      } else {
+        // send notification
+      }
+    } else {
+      // send Notification
+    }
+    console.log(chatMessages.length);
+    console.log('Message Received', message);
   },
 );
 
@@ -209,7 +232,7 @@ export const sendMessageThunk = createAsyncThunk(
   'chat/sendMessageThunk',
   async (
     data: {chatId: string | undefined; content: string},
-    {rejectWithValue},
+    {rejectWithValue, dispatch},
   ) => {
     if (!data?.chatId) {
       return toast.showErrorMessage(t('messagesNamespace.enterChatId'));
@@ -224,6 +247,8 @@ export const sendMessageThunk = createAsyncThunk(
       enableLoader: false,
     });
     if (res?.status) {
+      socketRef.current.emit('new message', res.data);
+      dispatch(messageFromSocketThunk(res.data));
       return {data: res.data};
     } else {
       toast.showErrorMessage(res?.message);
@@ -251,7 +276,6 @@ export const fetchMessagesThunk = createAsyncThunk(
       enableLoader: false,
       cancelToken: cancelToken,
     });
-    console.log(JSON.stringify(res));
     if (res?.status) {
       if (res.data.length) {
         dispatch(setChatMessages(res.data));

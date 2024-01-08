@@ -23,4 +23,7 @@ export default {
     DELETE_GROUP: 'chat/deleteGroup',
     SEND_MESSAGE: 'message',
   },
+  sockets: {
+    ENDPOINT: 'http://192.168.29.88:3000',
+  },
 };
