@@ -18,7 +18,7 @@ import axios from 'axios';
 // Files
 import {getScreenHeight} from '../../utils/commonServices';
 import {ColorTheme, Theme} from '../../theme';
-import {Box, CustomHeader} from '../../components';
+import {Box, CustomHeader, Text} from '../../components';
 import images from '../../constants/images';
 import {goBack, navigate} from '../../utils/routerServices';
 import {Images, Routes} from '../../constants';
@@ -30,6 +30,7 @@ import {
   setChatMessages,
 } from '../../redux/chat';
 import Message from '../../components/chat/Message';
+import {socketRef} from '../../routers/HomeStack';
 
 const Chat = () => {
   const theme = useTheme<Theme>();
@@ -37,6 +38,7 @@ const Chat = () => {
   const {t} = useTranslation();
   const dispatch: AppDispatch = useDispatch();
   const cancelToken = useRef<any>();
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   const chatInfo = useSelector((state: RootState) => state.chat.chatInfo);
   const chatMessages = useSelector(
@@ -45,6 +47,7 @@ const Chat = () => {
   const userData = useSelector((state: RootState) => state.auth.userData);
 
   const [message, setMessage] = useState('');
+  const [typing, setTyping] = useState(false);
 
   const headerName = useMemo(() => {
     if (chatInfo?.isGroupChat) {
@@ -80,10 +83,44 @@ const Chat = () => {
     };
   }, [chatInfo?._id, colors.mainBackground, dispatch]);
 
+  useEffect(() => {
+    socketRef?.current?.on('typing', () => {
+      setTyping(true);
+    });
+
+    socketRef?.current?.on('stoptyping', () => {
+      setTyping(false);
+    });
+
+    return () => {
+      // Clear old listeners before setting up new ones
+      socketRef?.current?.off('typing');
+      socketRef?.current?.off('stoptyping');
+      socketRef?.current?.emit('leave chat', chatInfo?._id);
+    };
+  }, [chatInfo?._id]);
+
   const onPressSend = () => {
+    socketRef?.current?.emit('stoptyping', chatInfo?._id);
+
     if (message) {
       dispatch(sendMessageThunk({content: message, chatId: chatInfo?._id}));
       setMessage('');
+    }
+  };
+
+  const changeHandler = (text: string) => {
+    setMessage(text);
+    if (text) {
+      socketRef.current?.emit('typing', chatInfo?._id);
+
+      if (timeoutRef?.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        socketRef?.current?.emit('stoptyping', chatInfo?._id);
+      }, 1000);
     }
   };
 
@@ -107,12 +144,13 @@ const Chat = () => {
             keyExtractor={(_, index) => index.toString()}
             renderItem={({item}) => <Message item={item} />}
           />
+          {typing ? <Text>Typing...</Text> : null}
           <Box margin={'l'} flexDirection={'row'} alignItems={'center'}>
             <Box maxHeight={getScreenHeight(10)} marginRight={'m'} flex={1}>
               <TextInput
                 style={styles.textInput}
                 placeholder={t('appNamespace.typeMessage')}
-                onChangeText={setMessage}
+                onChangeText={changeHandler}
                 value={message}
                 numberOfLines={4}
                 multiline={true}

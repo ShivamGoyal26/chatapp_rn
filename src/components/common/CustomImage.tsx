@@ -20,9 +20,17 @@ type CustomImageProps = {
   disabled?: boolean;
   uri?: string | undefined | null;
   action?: any;
+  height?: number;
+  width?: number;
 };
 
-const CustomImage = ({uri, action, disabled}: CustomImageProps) => {
+const CustomImage = ({
+  uri,
+  action,
+  disabled,
+  height,
+  width,
+}: CustomImageProps) => {
   const theme = useTheme<Theme>();
   const {colors} = theme;
   const {t} = useTranslation();
@@ -96,7 +104,11 @@ const CustomImage = ({uri, action, disabled}: CustomImageProps) => {
     <TouchableOpacity
       onPress={pickImage}
       disabled={!!disabled}
-      style={styles.imageContainer}>
+      style={[
+        styles.imageContainer,
+        {height: height ? height : getScreenHeight(12)},
+        {width: width ? width : getScreenHeight(12)},
+      ]}>
       {isLoading ? (
         <View style={styles.loader}>
           <ActivityIndicator />
